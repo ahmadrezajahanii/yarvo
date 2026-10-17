@@ -1,1 +1,1051 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>یار‌وو | Yarvo - همراه تو در تمام مسیر زندگی</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --card: #1e293b;
+            --text: #f8fafc;
+            --muted: #94a3b8;
+            --accent: #38bdf8;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --purple: #a855f7;
+            --border: #334155;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tahoma', 'Vazirmatn', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg); color: var(--text); padding: 14px; line-height: 1.6; }
+        .container { max-width: 1200px; margin: 0 auto; padding-bottom: 30px; }
+        
+        /* Brand Header */
+        header { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border: 1px solid var(--border); border-radius: 14px; padding: 16px 18px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; }
+        .brand-box { display: flex; flex-direction: column; gap: 4px; }
+        .brand-title { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+        .brand-title h1 { font-size: 1.5rem; color: var(--accent); letter-spacing: 0.5px; }
+        .brand-title .en-name { font-size: 1.1rem; color: var(--text); font-weight: bold; opacity: 0.9; }
+        .slogans { display: flex; flex-direction: column; gap: 2px; }
+        .slogan-fa { font-size: 0.88rem; color: #e2e8f0; font-weight: bold; }
+        .slogan-en { font-size: 0.78rem; color: var(--muted); direction: ltr; text-align: right; font-family: sans-serif; }
 
+        /* Buttons */
+        .btn { background: var(--accent); color: #000; border: none; padding: 9px 14px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.82rem; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+        .btn:active { transform: scale(0.98); }
+        .btn.secondary { background: #334155; color: var(--text); }
+        .btn.success { background: var(--success); color: #000; }
+        .btn.warning { background: var(--warning); color: #000; }
+        .btn.purple { background: var(--purple); color: #fff; }
+        .btn.danger { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid var(--danger); }
+
+        /* Storage & Backup Bar */
+        .storage-bar { background: #162032; border: 1px solid var(--border); padding: 12px 14px; border-radius: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .storage-status { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--muted); }
+        .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--success); box-shadow: 0 0 8px var(--success); display: inline-block; flex-shrink: 0; }
+
+        /* Date Navigation Bar */
+        .date-nav { background: var(--card); padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+        .date-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        input[type="date"] { background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 7px 10px; border-radius: 8px; font-size: 0.85rem; }
+        .jalali-badge { font-size: 0.95rem; font-weight: bold; color: var(--accent); background: rgba(56, 189, 248, 0.1); padding: 6px 12px; border-radius: 8px; border: 1px solid rgba(56, 189, 248, 0.3); }
+
+        /* Analytics & Long-term Trends */
+        .analytics-card { background: var(--card); padding: 16px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .tabs { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+        .tab-btn { background: var(--bg); color: var(--muted); border: 1px solid var(--border); padding: 7px 12px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; flex: 1; min-width: 95px; text-align: center; }
+        .tab-btn.active { background: var(--accent); color: #000; font-weight: bold; border-color: var(--accent); }
+
+        .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 18px; }
+        .kpi-box { background: var(--bg); padding: 10px; border-radius: 10px; border: 1px solid var(--border); text-align: center; }
+        .kpi-box span { display: block; font-size: 1.25rem; font-weight: bold; color: var(--success); margin-top: 4px; }
+        .kpi-box small { color: var(--muted); font-size: 0.74rem; }
+
+        .bars-container { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; height: 135px; align-items: end; padding-top: 22px; overflow-x: auto; }
+        .bar-wrapper { display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; min-width: 38px; }
+        .bar { width: 100%; max-width: 40px; border-radius: 5px 5px 0 0; transition: height 0.3s ease; min-height: 4px; }
+        .bar-percent { font-size: 0.68rem; color: var(--text); margin-bottom: 3px; }
+        .bar-label { font-size: 0.68rem; color: var(--muted); margin-top: 6px; white-space: nowrap; }
+
+        .cat-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--border); }
+        .cat-stat { background: var(--bg); padding: 9px 12px; border-radius: 8px; font-size: 0.8rem; }
+        .progress-line { height: 6px; background: #334155; border-radius: 4px; margin-top: 6px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--accent); }
+
+        /* Grid Categories */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 16px; margin-bottom: 20px; }
+        .category-card { background: var(--card); padding: 16px; border-radius: 12px; border: 1px solid var(--border); display: flex; flex-direction: column; }
+        .category-header { margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+        .category-title-area { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .category-title-area h2 { font-size: 0.96rem; color: var(--text); }
+        .badge { font-size: 0.7rem; padding: 2px 8px; border-radius: 6px; background: #334155; color: var(--accent); }
+        .cat-actions { display: flex; gap: 4px; flex-shrink: 0; }
+        
+        .habit-item { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 0; border-bottom: 1px dashed #263349; }
+        .habit-item:last-child { border-bottom: none; }
+        .habit-label { display: flex; align-items: center; gap: 10px; cursor: pointer; flex: 1; font-size: 0.88rem; }
+        .habit-label input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--success); cursor: pointer; flex-shrink: 0; }
+        .habit-item.checked .habit-label span { text-decoration: line-through; color: var(--muted); }
+        .icon-btn { background: transparent; border: none; cursor: pointer; font-size: 0.9rem; opacity: 0.7; color: var(--text); padding: 4px 6px; border-radius: 4px; }
+        .icon-btn:hover { opacity: 1; background: #334155; }
+
+        /* Editor Panels */
+        .editor-panel { background: #162032; border: 2px solid var(--accent); border-radius: 12px; padding: 16px; margin-bottom: 20px; display: none; }
+        .editor-tabs { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 12px; flex-wrap: wrap; }
+        .form-row { display: grid; grid-template-columns: 2fr 1fr auto; gap: 10px; margin-bottom: 12px; }
+        @media (max-width: 768px) { .form-row { grid-template-columns: 1fr; } }
+        input[type="text"], select, textarea { background: var(--bg); color: var(--text); border: 1px solid var(--border); padding: 9px 12px; border-radius: 8px; width: 100%; font-size: 0.88rem; }
+        .days-checkboxes { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; background: var(--bg); padding: 10px; border-radius: 8px; align-items: center; font-size: 0.82rem; }
+        .manage-list { margin-top: 12px; max-height: 260px; overflow-y: auto; border-top: 1px solid var(--border); padding-top: 10px; }
+        .manage-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 10px; background: var(--card); border-radius: 8px; margin-bottom: 8px; font-size: 0.82rem; gap: 8px; flex-wrap: wrap; }
+
+        .report-buttons-bar { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; padding-bottom: 12px; border-bottom: 1px dashed var(--border); }
+        .notice { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning); color: #fcd34d; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; font-size: 0.85rem; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="brand-box">
+            <div class="brand-title">
+                <h1>یار‌وو</h1>
+                <span class="en-name">Yarvo</span>
+            </div>
+            <div class="slogans">
+                <span class="slogan-fa">همراه تو در تمام مسیر زندگی.</span>
+                <span class="slogan-en">Your Life. One Companion.</span>
+            </div>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn purple" onclick="openEditor('categories')">🗂️ مدیریت بخش‌ها</button>
+            <button class="btn warning" onclick="openEditor('tasks')">⚙️ مدیریت کارها</button>
+            <button class="btn secondary" onclick="exportCSV()">📊 خروجی اکسل</button>
+        </div>
+    </header>
+
+    <!-- نوار مدیریت ذخیره‌سازی و پشتیبان‌گیری -->
+    <div class="storage-bar">
+        <div class="storage-status">
+            <span class="dot" id="storageDot"></span>
+            <span id="storageText">ذخیره‌سازی خودکار در حافظه دستگاه فعال است ✔</span>
+        </div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button class="btn secondary" onclick="downloadBackupJSON()">⬇️ دریافت فایل پشتیبان</button>
+            <label class="btn secondary" style="cursor: pointer;">
+                ⬆️ بازیابی از فایل پشتیبان
+                <input type="file" accept=".json" style="display: none;" onchange="importBackupJSON(event)">
+            </label>
+        </div>
+    </div>
+
+    <!-- پنل مدیریت دوگانه: ۱. بخش‌ها (Categories) | ۲. کارها (Tasks) -->
+    <div class="editor-panel" id="editorPanel">
+        <div class="editor-tabs">
+            <button class="btn" id="tabBtnCats" onclick="switchEditorTab('categories')">🗂️ ۱. ویرایش بخش‌های اصلی</button>
+            <button class="btn secondary" id="tabBtnTasks" onclick="switchEditorTab('tasks')">📋 ۲. ویرایش کارهای روزانه</button>
+            <button class="btn danger" style="margin-right: auto;" onclick="resetToDefaultAll()">بازنشانی پیش‌فرض</button>
+            <button class="btn secondary" onclick="closeEditor()">بستن ✖</button>
+        </div>
+
+        <!-- تب اول: مدیریت بخش‌ها -->
+        <div id="editorCatsView" style="display: none;">
+            <h3 style="color: var(--accent); margin-bottom: 10px; font-size: 0.95rem;" id="catFormTitle">افزودن یا ویرایش بخش</h3>
+            <input type="hidden" id="editCatId" value="">
+            <div class="form-row">
+                <input type="text" id="catTitleInput" placeholder="نام بخش (مثلاً: ۱. روتین صبحگاهی ۵:۳۰ الی ۸:۰۰)...">
+                <input type="text" id="catBadgeInput" placeholder="برچسب (مثلاً: تمرکز / ساعت کاری)...">
+                <button class="btn success" id="saveCatBtn" onclick="saveCategory()">+ ذخیره بخش</button>
+            </div>
+            <div class="manage-list" id="manageCatsList"></div>
+        </div>
+
+        <!-- تب دوم: مدیریت کارهای روزانه -->
+        <div id="editorTasksView" style="display: none;">
+            <h3 style="color: var(--accent); margin-bottom: 10px; font-size: 0.95rem;" id="taskFormTitle">افزودن یا ویرایش کار روزانه</h3>
+            <input type="hidden" id="editItemId" value="">
+            <div class="form-row">
+                <input type="text" id="habitTextInput" placeholder="عنوان کار یا عادت جدید...">
+                <select id="habitCatSelect"></select>
+                <button class="btn success" id="saveHabitBtn" onclick="saveHabitItem()">+ ذخیره کار</button>
+            </div>
+            <div class="days-checkboxes" id="habitDaysCheckboxes"></div>
+            <div style="display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap;">
+                <button class="btn secondary" style="font-size:0.75rem; padding:4px 10px;" onclick="selectPresetDays(['sat','sun','mon','tue','wed'])">شنبه تا چهارشنبه</button>
+                <button class="btn secondary" style="font-size:0.75rem; padding:4px 10px;" onclick="selectPresetDays(['sat','sun','mon','tue','wed','thu','fri'])">همه روزها</button>
+                <button class="btn secondary" style="font-size:0.75rem; padding:4px 10px;" onclick="selectPresetDays(['thu'])">فقط پنج‌شنبه</button>
+                <button class="btn secondary" style="font-size:0.75rem; padding:4px 10px;" onclick="selectPresetDays(['fri'])">فقط جمعه</button>
+            </div>
+            <div class="manage-list" id="manageTasksList"></div>
+        </div>
+    </div>
+
+    <!-- نوار انتخاب تاریخ روزانه -->
+    <div class="date-nav">
+        <div class="date-controls">
+            <button class="btn secondary" onclick="changeDate(-1)">◀ روز قبل</button>
+            <input type="date" id="datePicker" onchange="onDatePick(this.value)">
+            <button class="btn secondary" onclick="changeDate(1)">روز بعد ▶</button>
+            <button class="btn" onclick="goToToday()">امروز</button>
+        </div>
+        <div class="jalali-badge" id="jalaliDisplay">در حال بارگذاری تاریخ...</div>
+    </div>
+
+    <div id="specialDayNotice" class="notice"></div>
+
+    <!-- چک‌لیست روزانه -->
+    <div class="grid" id="habitsGrid"></div>
+
+    <!-- یادداشت روزانه -->
+    <div class="analytics-card">
+        <h3 style="font-size: 0.95rem; margin-bottom: 8px; color: var(--accent);">📝 یادداشت و دستاوردهای امروز</h3>
+        <textarea id="dailyNote" rows="2" placeholder="وقایع مهم امروز، تعداد فاکتورهای ثبت‌شده، وضعیت سایت فرش/هتل یا صفحات مطالعه‌شده را اینجا بنویسید..." oninput="saveDailyNote(this.value)"></textarea>
+    </div>
+
+    <!-- بخش نمودار و تحلیل ۵ سطحی -->
+    <div class="analytics-card">
+        <h3 style="font-size: 1rem; margin-bottom: 12px; color: var(--accent);">📈 نمودار و آمار عملکرد در یار‌وو</h3>
+        <div class="tabs">
+            <button class="tab-btn" onclick="setAnalyticsRange('1d', this)">گزارش روزانه</button>
+            <button class="tab-btn active" onclick="setAnalyticsRange('7d', this)">گزارش هفتگی</button>
+            <button class="tab-btn" onclick="setAnalyticsRange('30d', this)">گزارش ماهانه</button>
+            <button class="tab-btn" onclick="setAnalyticsRange('365d', this)">گزارش سالانه</button>
+            <button class="tab-btn" onclick="setAnalyticsRange('all', this)">گزارش کل</button>
+        </div>
+
+        <div class="kpi-grid">
+            <div class="kpi-box">
+                <small id="kpiAvgTitle">میانگین تحقق اهداف</small>
+                <span id="kpiAvg">0%</span>
+            </div>
+            <div class="kpi-box">
+                <small>روزهای فعال ثبت‌شده</small>
+                <span id="kpiActiveDays">0 روز</span>
+            </div>
+            <div class="kpi-box">
+                <small>روزهای طلایی (+۷۰٪)</small>
+                <span id="kpiGoldenDays">0 روز</span>
+            </div>
+            <div class="kpi-box">
+                <small>زنجیره استمرار (Streak)</small>
+                <span id="kpiCurrentStreak">0 روز</span>
+            </div>
+        </div>
+
+        <div class="bars-container" id="chartBars"></div>
+        <div class="cat-breakdown" id="catBreakdown"></div>
+    </div>
+
+    <!-- بخش تولیدکننده خودکار متن گزارش‌ها با ۵ عنوان درخواستی -->
+    <div class="analytics-card">
+        <h3 style="font-size: 1rem; color: var(--accent);">📄 تولیدکننده متن رسمی گزارش‌ها (یار‌وو | Yarvo)</h3>
+        <small style="color: var(--muted);">روی هر کدام از ۵ عنوان زیر کلیک کنید تا متن کامل گزارش آماده کپی یا اشتراک‌گذاری شود:</small>
+        
+        <div class="report-buttons-bar">
+            <button class="btn" onclick="generateFormattedReport('1d')">📋 گزارش روزانه</button>
+            <button class="btn" onclick="generateFormattedReport('7d')">📋 گزارش هفتگی</button>
+            <button class="btn" onclick="generateFormattedReport('30d')">📋 گزارش ماهانه</button>
+            <button class="btn" onclick="generateFormattedReport('365d')">📋 گزارش سالانه</button>
+            <button class="btn purple" onclick="generateFormattedReport('all')">📋 گزارش کل</button>
+        </div>
+        <div style="display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap;">
+            <button class="btn success" onclick="copyReportBox()">📋 کپی متن گزارش</button>
+            <button class="btn secondary" onclick="shareReportText()">📤 ارسال و اشتراک‌گذاری مستقیم گزارش</button>
+        </div>
+
+        <textarea id="reportOutputBox" rows="9" placeholder="برای مشاهده متن گزارش، روی یکی از دکمه‌های بالا (گزارش روزانه، گزارش هفتگی، گزارش ماهانه، گزارش سالانه یا گزارش کل) کلیک کنید..."></textarea>
+    </div>
+</div>
+
+<script>
+    const weekDaysMap = [
+        { id: 'sun', jsDay: 0, name: 'یکشنبه' },
+        { id: 'mon', jsDay: 1, name: 'دوشنبه' },
+        { id: 'tue', jsDay: 2, name: 'سه‌شنبه' },
+        { id: 'wed', jsDay: 3, name: 'چهارشنبه' },
+        { id: 'thu', jsDay: 4, name: 'پنج‌شنبه' },
+        { id: 'fri', jsDay: 5, name: 'جمعه' },
+        { id: 'sat', jsDay: 6, name: 'شنبه' }
+    ];
+
+    const defaultCategories = [
+        {
+            id: 'morning',
+            title: '۱. روتین صبحگاهی (۰۵:۳۰ تا ۰۸:۰۰)',
+            badge: 'انرژی و تمرکز',
+            items: [
+                { id: 'm_exercise', text: 'ورزش صبحگاهی (پیاده‌روی / دوچرخه‌سواری)', days: ['sat','sun','mon','tue','wed','fri'] },
+                { id: 'm_shower_bf', text: 'دوش صبحگاهی و صرف صبحانه کامل', days: ['sat','sun','mon','tue','wed','thu','fri'] },
+                { id: 'm_lang', text: 'مطالعه زبان نوبت صبح (واژگان / گرامر آزمون جامع)', days: ['sat','sun','mon','tue','wed'] },
+                { id: 'm_phd', text: 'مطالعه دکتری نوبت صبح (مرور دروس آزمون جامع)', days: ['sat','sun','mon','tue','wed'] }
+            ]
+        },
+        {
+            id: 'work_carpet',
+            title: '۲. شرکت فرش و سایت‌ها (۰۸:۰۰ تا ۱۶:۰۰)',
+            badge: 'ساعت کاری',
+            items: [
+                { id: 'w_sales', text: 'شرکت فرش: ثبت فاکتورها، سفارشات مشتریان و پیگیری فروش', days: ['sat','sun','mon','tue','wed'] },
+                { id: 'w_catalog', text: 'شرکت فرش: بروزرسانی کاتالوگ محصولات و کنترل موجودی', days: ['sat','sun','mon','tue','wed'] },
+                { id: 'w_seo_it', text: 'شرکت فرش: سئو سایت شرکت + پشتیبانی فنی و IT', days: ['sat','sun','mon','tue','wed'] },
+                { id: 'w_my_carpet', text: 'سایت فرش شخصی: بارگذاری محصول، توسعه، سئو و نماد اعتماد', days: ['sat','sun','mon','tue','wed'] },
+                { id: 'w_hotel', text: 'پروژه هتل: پیشبرد سایت هتل و ثبت در پلتفرم‌های رزرو', days: ['sat','sun','mon','tue','wed'] },
+                { id: 'w_uni_teach', text: 'حضور و تدریس در دانشگاه (۷:۳۰ صبح الی ۱۹:۳۰ عصر)', days: ['thu'] }
+            ]
+        },
+        {
+            id: 'afternoon_phd',
+            title: '۳. پژوهش دکتری و زبان (بعد از ظهر)',
+            badge: 'آینده تحصیلی و مهاجرت',
+            items: [
+                { id: 'a_phd_exam', text: 'مطالعه عمیق آزمون جامع دکتری (آمادگی کتبی و شفاهی)', days: ['sat','sun','mon','tue','wed','fri'] },
+                { id: 'a_isi', text: 'تحقیق و نگارش مقاله ISI (ریسرچ، متدولوژی و نگارش)', days: ['sat','sun','mon','tue','wed','fri'] },
+                { id: 'a_lang_immig', text: 'مطالعه زبان نوبت عصر (مدرک زبان و مهارت مهاجرت)', days: ['sat','sun','mon','tue','wed','fri'] }
+            ]
+        },
+        {
+            id: 'life_sport',
+            title: '۴. ورزش، خانواده و اوقات فراغت',
+            badge: 'توازن زندگی',
+            items: [
+                { id: 'l_pool', text: 'ورزش استخر (برنامه ۲ روز در هفته)', days: ['sat','sun','mon','tue','wed','fri'] },
+                { id: 'l_spouse', text: 'وقت‌گذرانی، بیرون رفتن و خلوت دونفره با همسر', days: ['sat','sun','mon','tue','wed','thu','fri'] },
+                { id: 'l_family_friends', text: 'شب‌نشینی با خانواده یا دورهمی با دوستان', days: ['sat','sun','mon','tue','wed','thu','fri'] },
+                { id: 'l_fri_lunch', text: 'صرف ناهار روز جمعه با مادر همسر', days: ['fri'] },
+                { id: 'l_book', text: 'مطالعه کتاب‌های موفقیت و توسعه فردی', days: ['sat','sun','mon','tue','wed','thu','fri'] }
+            ]
+        }
+    ];
+
+    let db = JSON.parse(localStorage.getItem('yarvoTrackerDB_v1') || localStorage.getItem('lifeTrackerDB_v2')) || {
+        categories: JSON.parse(JSON.stringify(defaultCategories)),
+        records: {}
+    };
+
+    let selectedDateStr = formatDateISO(new Date());
+    let currentRange = '7d';
+
+    const rangeTitles = {
+        '1d': 'گزارش روزانه',
+        '7d': 'گزارش هفتگی',
+        '30d': 'گزارش ماهانه',
+        '365d': 'گزارش سالانه',
+        'all': 'گزارش کل'
+    };
+
+    function formatDateISO(dateObj) {
+        const y = dateObj.getFullYear();
+        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const d = String(dateObj.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+
+    function getDayCodeFromISO(isoStr) {
+        const [y, m, d] = isoStr.split('-').map(Number);
+        const dateObj = new Date(y, m - 1, d);
+        return weekDaysMap.find(w => w.jsDay === dateObj.getDay());
+    }
+
+    function getJalaliString(isoStr) {
+        const [y, m, d] = isoStr.split('-').map(Number);
+        const dateObj = new Date(y, m - 1, d);
+        try {
+            return new Intl.DateTimeFormat('fa-IR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(dateObj);
+        } catch (e) {
+            return isoStr;
+        }
+    }
+
+    function saveDatabase() {
+        localStorage.setItem('yarvoTrackerDB_v1', JSON.stringify(db));
+        document.getElementById('storageText').innerText = 'ذخیره خودکار در یار‌وو انجام شد ✔ (' + new Date().toLocaleTimeString('fa-IR') + ')';
+    }
+
+    function downloadBackupJSON() {
+        const jsonText = JSON.stringify(db, null, 2);
+        if (navigator.share) {
+            const file = new File([jsonText], `Yarvo_Backup_${selectedDateStr}.json`, { type: 'application/json' });
+            if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                navigator.share({ title: 'Yarvo Backup', files: [file] }).catch(() => {});
+                return;
+            }
+        }
+        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonText);
+        const a = document.createElement('a');
+        a.href = dataStr;
+        a.download = `Yarvo_Backup_${selectedDateStr}.json`;
+        a.click();
+    }
+
+    function importBackupJSON(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const imported = JSON.parse(e.target.result);
+                if (imported.categories && imported.records) {
+                    db = imported;
+                    saveDatabase();
+                    initEditorForm();
+                    renderAll();
+                    alert('اطلاعات شما در یار‌وو با موفقیت بازیابی شد!');
+                } else {
+                    alert('فرمت فایل پشتیبان نامعتبر است.');
+                }
+            } catch (err) {
+                alert('خطا در خواندن فایل پشتیبان.');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+    function exportCSV() {
+        let csv = '\uFEFFتاریخ میلادی,تاریخ شمسی,روز هفته,درصد پیشرفت,تعداد انجام شده,کل کارهای روز,یادداشت روزانه\n';
+        const sortedDates = Object.keys(db.records).sort();
+        if (sortedDates.length === 0) return alert('هنوز داده‌ای در یار‌وو ثبت نشده است.');
+
+        sortedDates.forEach(dateStr => {
+            const stats = calcDateStats(dateStr);
+            const jalali = getJalaliString(dateStr).replace(/,/g, ' ');
+            const dayName = getDayCodeFromISO(dateStr).name;
+            const note = (db.records[dateStr]?.note || '').replace(/\n/g, ' | ').replace(/,/g, '،');
+            csv += `${dateStr},${jalali},${dayName},${stats.pct}%,${stats.done},${stats.total},"${note}"\n`;
+        });
+
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `Yarvo_History_${selectedDateStr}.csv`;
+        a.click();
+    }
+
+    function getActiveItemsForDate(isoStr) {
+        const dayInfo = getDayCodeFromISO(isoStr);
+        let list = [];
+        db.categories.forEach(cat => {
+            cat.items.forEach(item => {
+                if (item.days.includes(dayInfo.id)) list.push({ ...item, catId: cat.id });
+            });
+        });
+        return list;
+    }
+
+    function calcDateStats(isoStr) {
+        const items = getActiveItemsForDate(isoStr);
+        if (items.length === 0) return { done: 0, total: 0, pct: 0 };
+        let done = 0;
+        const checks = db.records[isoStr]?.checks || {};
+        items.forEach(item => {
+            if (checks[item.id]) done++;
+        });
+        return { done, total: items.length, pct: Math.round((done / items.length) * 100) };
+    }
+
+    function changeDate(offsetDays) {
+        const [y, m, d] = selectedDateStr.split('-').map(Number);
+        const dt = new Date(y, m - 1, d);
+        dt.setDate(dt.getDate() + offsetDays);
+        selectedDateStr = formatDateISO(dt);
+        renderAll();
+    }
+
+    function onDatePick(val) {
+        if (val) { selectedDateStr = val; renderAll(); }
+    }
+
+    function goToToday() {
+        selectedDateStr = formatDateISO(new Date());
+        renderAll();
+    }
+
+    function renderDateHeader() {
+        document.getElementById('datePicker').value = selectedDateStr;
+        const stats = calcDateStats(selectedDateStr);
+        document.getElementById('jalaliDisplay').innerText = `${getJalaliString(selectedDateStr)} — پیشرفت: ${stats.pct}%`;
+
+        const dayInfo = getDayCodeFromISO(selectedDateStr);
+        const notice = document.getElementById('specialDayNotice');
+        if (dayInfo.id === 'thu') {
+            notice.style.display = 'block';
+            notice.innerText = '📌 پنج‌شنبه (روز تدریس دانشگاه): از ساعت ۷:۳۰ صبح تا ۷:۳۰ عصر در دانشگاه هستید.';
+        } else if (dayInfo.id === 'fri') {
+            notice.style.display = 'block';
+            notice.innerText = '🌿 جمعه (روز خانواده و ریکاوری): ناهار با مادر همسر، استراحت و مرور سبک دروس دکتری و زبان.';
+        } else {
+            notice.style.display = 'none';
+        }
+
+        document.getElementById('dailyNote').value = db.records[selectedDateStr]?.note || '';
+    }
+
+    function renderGrid() {
+        const grid = document.getElementById('habitsGrid');
+        grid.innerHTML = '';
+        const dayInfo = getDayCodeFromISO(selectedDateStr);
+        const checks = db.records[selectedDateStr]?.checks || {};
+
+        db.categories.forEach(cat => {
+            const activeItems = cat.items.filter(i => i.days.includes(dayInfo.id));
+
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            card.innerHTML = `
+                <div class="category-header">
+                    <div class="category-title-area">
+                        <h2>${cat.title}</h2>
+                        ${cat.badge ? `<span class="badge">${cat.badge}</span>` : ''}
+                    </div>
+                    <div class="cat-actions">
+                        <button class="icon-btn" title="افزودن کار به این بخش" onclick="quickAddTaskToCat('${cat.id}')">➕</button>
+                        <button class="icon-btn" title="ویرایش نام این بخش" onclick="editCategoryStart('${cat.id}')">✏️</button>
+                    </div>
+                </div>
+            `;
+
+            if (activeItems.length === 0) {
+                const emptyMsg = document.createElement('div');
+                emptyMsg.style.cssText = 'color: var(--muted); font-size: 0.82rem; padding: 10px 0;';
+                emptyMsg.innerText = 'کاری برای این روز هفته در این بخش تعریف نشده است.';
+                card.appendChild(emptyMsg);
+            } else {
+                activeItems.forEach(item => {
+                    const isChecked = !!checks[item.id];
+                    const row = document.createElement('div');
+                    row.className = `habit-item ${isChecked ? 'checked' : ''}`;
+                    row.innerHTML = `
+                        <label class="habit-label">
+                            <input type="checkbox" ${isChecked ? 'checked' : ''}>
+                            <span>${item.text}</span>
+                        </label>
+                        <div>
+                            <button class="icon-btn" title="ویرایش کار" onclick="editItemStart('${cat.id}','${item.id}')">✏️</button>
+                            <button class="icon-btn" title="حذف کار" onclick="deleteItem('${cat.id}','${item.id}')">🗑️</button>
+                        </div>
+                    `;
+                    row.querySelector('input').onchange = (e) => {
+                        if (!db.records[selectedDateStr]) db.records[selectedDateStr] = { checks: {}, note: '' };
+                        db.records[selectedDateStr].checks[item.id] = e.target.checked;
+                        saveDatabase();
+                        renderAll();
+                    };
+                    card.appendChild(row);
+                });
+            }
+            grid.appendChild(card);
+        });
+    }
+
+    function saveDailyNote(val) {
+        if (!db.records[selectedDateStr]) db.records[selectedDateStr] = { checks: {}, note: '' };
+        db.records[selectedDateStr].note = val;
+        saveDatabase();
+    }
+
+    function getDatesForRange(rangeType) {
+        const [y, m, d] = selectedDateStr.split('-').map(Number);
+        const refDate = new Date(y, m - 1, d);
+        let list = [];
+
+        if (rangeType === '1d') {
+            list.push(selectedDateStr);
+        } else if (rangeType === '7d' || rangeType === '30d') {
+            const count = rangeType === '7d' ? 7 : 30;
+            for (let i = count - 1; i >= 0; i--) {
+                const dt = new Date(refDate);
+                dt.setDate(dt.getDate() - i);
+                list.push(formatDateISO(dt));
+            }
+        } else if (rangeType === '365d') {
+            for (let i = 364; i >= 0; i--) {
+                const dt = new Date(refDate);
+                dt.setDate(dt.getDate() - i);
+                list.push(formatDateISO(dt));
+            }
+        } else if (rangeType === 'all') {
+            const allKeys = Object.keys(db.records).sort();
+            list = allKeys.length > 0 ? allKeys : [selectedDateStr];
+        }
+        return list;
+    }
+
+    function setAnalyticsRange(range, btnEl) {
+        currentRange = range;
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        if (btnEl) btnEl.classList.add('active');
+        renderAnalytics();
+    }
+
+    function renderAnalytics() {
+        const chart = document.getElementById('chartBars');
+        const breakdown = document.getElementById('catBreakdown');
+        chart.innerHTML = '';
+        breakdown.innerHTML = '';
+
+        const [y, m, d] = selectedDateStr.split('-').map(Number);
+        const refDate = new Date(y, m - 1, d);
+        const dateList = getDatesForRange(currentRange);
+        let barGroups = [];
+
+        document.getElementById('kpiAvgTitle').innerText = `میانگین (${rangeTitles[currentRange]})`;
+
+        if (currentRange === '1d') {
+            const dayInfo = getDayCodeFromISO(selectedDateStr);
+            const checks = db.records[selectedDateStr]?.checks || {};
+            db.categories.forEach(cat => {
+                const active = cat.items.filter(i => i.days.includes(dayInfo.id));
+                let done = 0;
+                active.forEach(i => { if (checks[i.id]) done++; });
+                const pct = active.length ? Math.round((done / active.length) * 100) : 0;
+                barGroups.push({ label: cat.title.slice(0, 14), pct });
+            });
+        } else if (currentRange === '7d' || currentRange === '30d') {
+            dateList.forEach(iso => {
+                const stats = calcDateStats(iso);
+                const shortLabel = currentRange === '7d' ? getDayCodeFromISO(iso).name : iso.slice(5);
+                barGroups.push({ label: shortLabel, pct: stats.pct });
+            });
+        } else if (currentRange === '365d') {
+            for (let i = 11; i >= 0; i--) {
+                const dt = new Date(refDate.getFullYear(), refDate.getMonth() - i, 1);
+                const ym = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}`;
+                let mTotal = 0, mDays = 0;
+                Object.keys(db.records).forEach(iso => {
+                    if (iso.startsWith(ym)) {
+                        const st = calcDateStats(iso);
+                        if (st.done > 0 || db.records[iso]?.note) {
+                            mTotal += st.pct;
+                            mDays++;
+                        }
+                    }
+                });
+                barGroups.push({ label: ym, pct: mDays ? Math.round(mTotal / mDays) : 0 });
+            }
+        } else if (currentRange === 'all') {
+            const yearsMap = {};
+            dateList.forEach(iso => {
+                const st = calcDateStats(iso);
+                if (st.done > 0 || db.records[iso]?.note) {
+                    const yr = iso.slice(0, 4);
+                    if (!yearsMap[yr]) yearsMap[yr] = [];
+                    yearsMap[yr].push(st.pct);
+                }
+            });
+            Object.keys(yearsMap).sort().forEach(yr => {
+                const arr = yearsMap[yr];
+                const avg = Math.round(arr.reduce((a, b) => a + b, 0) / arr.length);
+                barGroups.push({ label: `سال ${yr}`, pct: avg });
+            });
+            if (barGroups.length === 0) barGroups.push({ label: 'بدون سابقه', pct: 0 });
+        }
+
+        let sumPct = 0, activeDays = 0, goldenDays = 0;
+        if (currentRange === '1d') {
+            const st = calcDateStats(selectedDateStr);
+            sumPct = st.pct;
+            activeDays = st.done > 0 ? 1 : 0;
+            goldenDays = st.pct >= 70 ? 1 : 0;
+            document.getElementById('kpiAvg').innerText = st.pct + '%';
+        } else {
+            dateList.forEach(iso => {
+                if (db.records[iso]) {
+                    const st = calcDateStats(iso);
+                    if (st.done > 0 || db.records[iso]?.note) {
+                        activeDays++;
+                        sumPct += st.pct;
+                        if (st.pct >= 70) goldenDays++;
+                    }
+                }
+            });
+            document.getElementById('kpiAvg').innerText = (activeDays ? Math.round(sumPct / activeDays) : 0) + '%';
+        }
+
+        let streak = 0;
+        for (let i = 0; i < 3650; i++) {
+            const dt = new Date(refDate);
+            dt.setDate(dt.getDate() - i);
+            const iso = formatDateISO(dt);
+            if (calcDateStats(iso).pct >= 70) streak++;
+            else if (i > 0) break;
+        }
+
+        document.getElementById('kpiActiveDays').innerText = activeDays + ' روز';
+        document.getElementById('kpiGoldenDays').innerText = goldenDays + ' روز';
+        document.getElementById('kpiCurrentStreak').innerText = streak + ' روز';
+
+        barGroups.forEach(g => {
+            const wrap = document.createElement('div');
+            wrap.className = 'bar-wrapper';
+            wrap.innerHTML = `
+                <div class="bar-percent">${g.pct}%</div>
+                <div class="bar" style="height: ${Math.max(g.pct, 4)}%; background: ${g.pct >= 70 ? 'linear-gradient(to top, #16a34a, #4ade80)' : 'linear-gradient(to top, #0284c7, #38bdf8)'}"></div>
+                <div class="bar-label">${g.label}</div>
+            `;
+            chart.appendChild(wrap);
+        });
+
+        db.categories.forEach(cat => {
+            let catDone = 0, catTotal = 0;
+            dateList.forEach(iso => {
+                if (currentRange !== '1d' && !db.records[iso]) return;
+                const dayInfo = getDayCodeFromISO(iso);
+                const activeItems = cat.items.filter(i => i.days.includes(dayInfo.id));
+                activeItems.forEach(item => {
+                    catTotal++;
+                    if (db.records[iso]?.checks?.[item.id]) catDone++;
+                });
+            });
+            const catPct = catTotal ? Math.round((catDone / catTotal) * 100) : 0;
+            const box = document.createElement('div');
+            box.className = 'cat-stat';
+            box.innerHTML = `
+                <div style="display:flex; justify-content:space-between;">
+                    <span>${cat.title}</span>
+                    <strong>${catPct}%</strong>
+                </div>
+                <div class="progress-line"><div class="progress-fill" style="width:${catPct}%"></div></div>
+            `;
+            breakdown.appendChild(box);
+        });
+    }
+
+    function generateFormattedReport(rangeType) {
+        const title = rangeTitles[rangeType];
+        const dateList = getDatesForRange(rangeType);
+        let text = `========================================\n`;
+        text += `✨ یار‌وو | Yarvo — همراه تو در تمام مسیر زندگی\n`;
+        text += `📊 ${title}\n`;
+
+        if (rangeType === '1d') {
+            const st = calcDateStats(selectedDateStr);
+            const dayInfo = getDayCodeFromISO(selectedDateStr);
+            const checks = db.records[selectedDateStr]?.checks || {};
+            text += `📅 تاریخ: ${getJalaliString(selectedDateStr)} (${selectedDateStr})\n`;
+            text += `📈 میزان تحقق اهداف روز: ${st.pct}% (${st.done} از ${st.total} کار)\n`;
+            text += `========================================\n`;
+
+            db.categories.forEach(cat => {
+                const activeItems = cat.items.filter(i => i.days.includes(dayInfo.id));
+                if (activeItems.length === 0) return;
+                let cDone = 0;
+                activeItems.forEach(i => { if (checks[i.id]) cDone++; });
+                const cPct = Math.round((cDone / activeItems.length) * 100);
+
+                text += `\n🔹 ${cat.title} [پیشرفت بخش: ${cPct}%]:\n`;
+                activeItems.forEach(item => {
+                    text += `  ${checks[item.id] ? '✅' : '⬜'} ${item.text}\n`;
+                });
+            });
+
+            const note = db.records[selectedDateStr]?.note;
+            if (note) {
+                text += `\n📝 یادداشت و دستاوردهای روز:\n${note}\n`;
+            }
+        } else {
+            const firstDate = dateList[0];
+            const lastDate = dateList[dateList.length - 1];
+            let activeDays = 0, sumPct = 0, goldenDays = 0, totalTasksDone = 0;
+
+            dateList.forEach(iso => {
+                if (db.records[iso]) {
+                    const st = calcDateStats(iso);
+                    if (st.done > 0 || db.records[iso]?.note) {
+                        activeDays++;
+                        sumPct += st.pct;
+                        totalTasksDone += st.done;
+                        if (st.pct >= 70) goldenDays++;
+                    }
+                }
+            });
+
+            const avgPct = activeDays ? Math.round(sumPct / activeDays) : 0;
+            text += `📅 بازه زمانی: از ${getJalaliString(firstDate)} تا ${getJalaliString(lastDate)}\n`;
+            text += `📈 میانگین کل پیشرفت در این بازه: ${avgPct}%\n`;
+            text += `🗓️ روزهای فعال ثبت‌شده: ${activeDays} روز | 🌟 روزهای طلایی (+۷۰٪): ${goldenDays} روز\n`;
+            text += `✔️ مجموع کل تسک‌های انجام‌شده: ${totalTasksDone} مورد\n`;
+            text += `========================================\n\n`;
+            text += `📌 عملکرد تفکیکی هر بخش در این بازه:\n`;
+
+            db.categories.forEach(cat => {
+                let catDone = 0, catTotal = 0;
+                dateList.forEach(iso => {
+                    if (!db.records[iso]) return;
+                    const dayInfo = getDayCodeFromISO(iso);
+                    const activeItems = cat.items.filter(i => i.days.includes(dayInfo.id));
+                    activeItems.forEach(item => {
+                        catTotal++;
+                        if (db.records[iso]?.checks?.[item.id]) catDone++;
+                    });
+                });
+                const catPct = catTotal ? Math.round((catDone / catTotal) * 100) : 0;
+                text += `  🔸 ${cat.title}: ${catPct}% (${catDone} از ${catTotal} مورد در روزهای فعال)\n`;
+            });
+
+            const notesList = [];
+            dateList.forEach(iso => {
+                const n = db.records[iso]?.note?.trim();
+                if (n) notesList.push(`• [${getJalaliString(iso)}]: ${n}`);
+            });
+
+            if (notesList.length > 0) {
+                text += `\n📝 خلاصه یادداشت‌ها و وقایع ثبت‌شده در این دوره:\n`;
+                text += notesList.join('\n') + '\n';
+            }
+        }
+
+        document.getElementById('reportOutputBox').value = text;
+    }
+
+    function copyReportBox() {
+        const box = document.getElementById('reportOutputBox');
+        if (!box.value) generateFormattedReport(currentRange);
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(box.value).then(() => alert('متن گزارش کپی شد!'));
+        } else {
+            box.select();
+            document.execCommand('copy');
+            alert('متن گزارش کپی شد!');
+        }
+    }
+
+    function shareReportText() {
+        const box = document.getElementById('reportOutputBox');
+        if (!box.value) generateFormattedReport(currentRange);
+        if (navigator.share) {
+            navigator.share({ title: 'گزارش یار‌وو | Yarvo', text: box.value }).catch(() => {});
+        } else {
+            copyReportBox();
+        }
+    }
+
+    // ==================== مدیریت بخش‌ها (Categories) و کارها (Tasks) ====================
+    function openEditor(tabName) {
+        document.getElementById('editorPanel').style.display = 'block';
+        switchEditorTab(tabName);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function closeEditor() {
+        document.getElementById('editorPanel').style.display = 'none';
+    }
+
+    function switchEditorTab(tabName) {
+        const isCats = tabName === 'categories';
+        document.getElementById('editorCatsView').style.display = isCats ? 'block' : 'none';
+        document.getElementById('editorTasksView').style.display = isCats ? 'none' : 'block';
+        document.getElementById('tabBtnCats').className = isCats ? 'btn' : 'btn secondary';
+        document.getElementById('tabBtnTasks').className = !isCats ? 'btn' : 'btn secondary';
+        initEditorForm();
+        if (isCats) renderManageCategoriesList();
+        else renderManageTasksList();
+    }
+
+    function initEditorForm() {
+        const select = document.getElementById('habitCatSelect');
+        const currentVal = select.value;
+        select.innerHTML = '';
+        db.categories.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.innerText = c.title;
+            select.appendChild(opt);
+        });
+        if (currentVal && db.categories.some(c => c.id === currentVal)) select.value = currentVal;
+
+        const daysBox = document.getElementById('habitDaysCheckboxes');
+        if (daysBox.children.length === 0) {
+            daysBox.innerHTML = '<strong style="color: var(--accent); margin-left: 8px;">روزهای تکرار:</strong>';
+            ['sat','sun','mon','tue','wed','thu','fri'].forEach(dId => {
+                const dName = weekDaysMap.find(w => w.id === dId).name;
+                const lbl = document.createElement('label');
+                lbl.style.marginLeft = '10px';
+                lbl.innerHTML = `<input type="checkbox" class="day-chk" value="${dId}" checked> ${dName}`;
+                daysBox.appendChild(lbl);
+            });
+        }
+    }
+
+    function selectPresetDays(dayIds) {
+        document.querySelectorAll('.day-chk').forEach(chk => {
+            chk.checked = dayIds.includes(chk.value);
+        });
+    }
+
+    function saveCategory() {
+        const title = document.getElementById('catTitleInput').value.trim();
+        const badge = document.getElementById('catBadgeInput').value.trim();
+        const editId = document.getElementById('editCatId').value;
+
+        if (!title) return alert('لطفاً نام بخش را وارد کنید.');
+
+        if (editId) {
+            const cat = db.categories.find(c => c.id === editId);
+            if (cat) { cat.title = title; cat.badge = badge; }
+            document.getElementById('editCatId').value = '';
+            document.getElementById('saveCatBtn').innerText = '+ ذخیره بخش';
+            document.getElementById('catFormTitle').innerText = 'افزودن یا ویرایش بخش';
+        } else {
+            db.categories.push({ id: 'cat_' + Date.now(), title, badge: badge || 'بخش سفارشی', items: [] });
+        }
+
+        document.getElementById('catTitleInput').value = '';
+        document.getElementById('catBadgeInput').value = '';
+        saveDatabase();
+        initEditorForm();
+        renderManageCategoriesList();
+        renderAll();
+    }
+
+    function editCategoryStart(catId) {
+        const cat = db.categories.find(c => c.id === catId);
+        if (!cat) return;
+        openEditor('categories');
+        document.getElementById('catTitleInput').value = cat.title;
+        document.getElementById('catBadgeInput').value = cat.badge || '';
+        document.getElementById('editCatId').value = cat.id;
+        document.getElementById('saveCatBtn').innerText = '✔ ثبت ویرایش بخش';
+        document.getElementById('catFormTitle').innerText = 'در حال ویرایش بخش: ' + cat.title;
+    }
+
+    function moveCategory(index, direction) {
+        const newIndex = index + direction;
+        if (newIndex < 0 || newIndex >= db.categories.length) return;
+        const temp = db.categories[index];
+        db.categories[index] = db.categories[newIndex];
+        db.categories[newIndex] = temp;
+        saveDatabase();
+        initEditorForm();
+        renderManageCategoriesList();
+        renderAll();
+    }
+
+    function deleteCategory(catId) {
+        const cat = db.categories.find(c => c.id === catId);
+        if (!cat) return;
+        if (db.categories.length <= 1) return alert('حداقل یک بخش باید در یار‌وو باقی بماند.');
+        if (!confirm(`آیا بخش «${cat.title}» حذف شود؟`)) return;
+
+        db.categories = db.categories.filter(c => c.id !== catId);
+        saveDatabase();
+        initEditorForm();
+        renderManageCategoriesList();
+        renderAll();
+    }
+
+    function renderManageCategoriesList() {
+        const container = document.getElementById('manageCatsList');
+        container.innerHTML = '';
+        db.categories.forEach((cat, idx) => {
+            const div = document.createElement('div');
+            div.className = 'manage-item';
+            div.innerHTML = `
+                <div>
+                    <strong style="color:var(--accent); font-size:0.9rem;">${cat.title}</strong>
+                    <span class="badge" style="margin-right:6px;">${cat.badge || 'بدون برچسب'}</span>
+                    <small style="color:var(--muted); margin-right:6px;">(${cat.items.length} کار)</small>
+                </div>
+                <div style="display:flex; gap:6px; align-items:center;">
+                    <button class="btn secondary" style="padding:4px 8px;" onclick="moveCategory(${idx}, -1)">⬆️</button>
+                    <button class="btn secondary" style="padding:4px 8px;" onclick="moveCategory(${idx}, 1)">⬇️</button>
+                    <button class="btn warning" style="padding:4px 10px; font-size:0.75rem;" onclick="editCategoryStart('${cat.id}')">ویرایش</button>
+                    <button class="btn danger" style="padding:4px 10px; font-size:0.75rem;" onclick="deleteCategory('${cat.id}')">حذف</button>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function quickAddTaskToCat(catId) {
+        openEditor('tasks');
+        document.getElementById('habitCatSelect').value = catId;
+        document.getElementById('habitTextInput').focus();
+    }
+
+    function saveHabitItem() {
+        const text = document.getElementById('habitTextInput').value.trim();
+        const catId = document.getElementById('habitCatSelect').value;
+        const editId = document.getElementById('editItemId').value;
+        const selectedDays = Array.from(document.querySelectorAll('.day-chk:checked')).map(c => c.value);
+
+        if (!text || selectedDays.length === 0) return alert('عنوان کار و حداقل یک روز را مشخص کنید.');
+
+        if (editId) {
+            db.categories.forEach(c => c.items = c.items.filter(i => i.id !== editId));
+            db.categories.find(c => c.id === catId).items.push({ id: editId, text, days: selectedDays });
+            document.getElementById('editItemId').value = '';
+            document.getElementById('saveHabitBtn').innerText = '+ ذخیره کار';
+            document.getElementById('taskFormTitle').innerText = 'افزودن یا ویرایش کار روزانه';
+        } else {
+            db.categories.find(c => c.id === catId).items.push({ id: 'h_' + Date.now(), text, days: selectedDays });
+        }
+
+        document.getElementById('habitTextInput').value = '';
+        saveDatabase();
+        renderAll();
+        renderManageTasksList();
+    }
+
+    function editItemStart(catId, itemId) {
+        const item = db.categories.find(c => c.id === catId)?.items.find(i => i.id === itemId);
+        if (!item) return;
+        openEditor('tasks');
+        document.getElementById('habitTextInput').value = item.text;
+        document.getElementById('habitCatSelect').value = catId;
+        document.getElementById('editItemId').value = item.id;
+        document.getElementById('saveHabitBtn').innerText = '✔ ثبت ویرایش کار';
+        document.getElementById('taskFormTitle').innerText = 'در حال ویرایش: ' + item.text;
+        selectPresetDays(item.days);
+    }
+
+    function deleteItem(catId, itemId) {
+        if (!confirm('این کار حذف شود؟')) return;
+        const cat = db.categories.find(c => c.id === catId);
+        cat.items = cat.items.filter(i => i.id !== itemId);
+        saveDatabase();
+        renderAll();
+        renderManageTasksList();
+    }
+
+    function renderManageTasksList() {
+        const container = document.getElementById('manageTasksList');
+        container.innerHTML = '';
+        db.categories.forEach(cat => {
+            cat.items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'manage-item';
+                div.innerHTML = `
+                    <span><strong style="color:var(--accent);">[${cat.title}]</strong> ${item.text}</span>
+                    <div style="display:flex; gap:6px;">
+                        <button class="btn secondary" style="padding:3px 8px; font-size:0.75rem;" onclick="editItemStart('${cat.id}','${item.id}')">ویرایش</button>
+                        <button class="btn danger" style="padding:3px 8px; font-size:0.75rem;" onclick="deleteItem('${cat.id}','${item.id}')">حذف</button>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        });
+    }
+
+    function resetToDefaultAll() {
+        if (confirm('آیا می‌خواهید ساختار بخش‌ها و کارها به حالت ۴ بخشی پیش‌فرض برگردد؟')) {
+            db.categories = JSON.parse(JSON.stringify(defaultCategories));
+            saveDatabase();
+            initEditorForm();
+            renderManageCategoriesList();
+            renderManageTasksList();
+            renderAll();
+        }
+    }
+
+    function renderAll() {
+        renderDateHeader();
+        renderGrid();
+        renderAnalytics();
+    }
+
+    initEditorForm();
+    renderAll();
+</script>
+
+</body>
+</html>
