@@ -1,1 +1,6 @@
-
+{
+  "appId": "com.jahani.yarvojahani",
+  "appName": "Yarvo Habit Tracker",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}
