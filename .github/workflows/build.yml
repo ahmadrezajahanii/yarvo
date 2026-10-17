@@ -1,1 +1,110 @@
+name: Build Yarvo Android App (APK & AAB)
 
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 1. Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: 2. Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: 3. Setup Java JDK 17
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: 4. Backup Uploaded Logos & Prepare Web Folder
+      run: |
+        mkdir -p /tmp/custom_res
+        if [ -d "android/app/src/main/res" ]; then
+          cp -r android/app/src/main/res/* /tmp/custom_res/ || true
+        fi
+        rm -rf android www
+        mkdir -p www
+        cp index.html www/index.html
+
+    - name: 5. Initialize Capacitor & Android Platform
+      run: |
+        if [ ! -f "package.json" ]; then
+          npm init -y
+        fi
+        npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
+        npx cap add android
+        npx cap copy android
+
+    - name: 6. Restore Yarvo Logos & Set Persian App Name
+      run: |
+        if [ "$(ls -A /tmp/custom_res)" ]; then
+          if [ ! -d "/tmp/custom_res/mipmap-anydpi-v26" ]; then
+            rm -rf android/app/src/main/res/mipmap-anydpi-v26
+          fi
+          cp -rf /tmp/custom_res/* android/app/src/main/res/
+        fi
+        if [ -f "android/app/src/main/res/values/strings.xml" ]; then
+          sed -i 's|<string name="app_name">.*</string>|<string name="app_name">یار‌وو</string>|g' android/app/src/main/res/values/strings.xml
+          sed -i 's|<string name="title_activity_main">.*</string>|<string name="title_activity_main">یار‌وو</string>|g' android/app/src/main/res/values/strings.xml
+        fi
+
+    - name: 7. Generate Official Keystore for Cafe Bazaar
+      run: |
+        cd android/app
+        keytool -genkeypair -v \
+          -keystore yarvo-release-key.jks \
+          -alias yarvo-key \
+          -keyalg RSA \
+          -keysize 2048 \
+          -validity 10000 \
+          -storepass Yarvo1405Pass \
+          -keypass Yarvo1405Pass \
+          -dname "CN=AhmadReza Jahani, OU=Yarvo, O=Yarvo, L=Kashan, ST=Isfahan, C=IR"
+
+    - name: 8. Configure Release Signing & Build APK + AAB
+      run: |
+        cat << 'EOF' >> android/app/build.gradle
+
+        android {
+            signingConfigs {
+                release {
+                    storeFile file('yarvo-release-key.jks')
+                    storePassword 'Yarvo1405Pass'
+                    keyAlias 'yarvo-key'
+                    keyPassword 'Yarvo1405Pass'
+                }
+            }
+            buildTypes {
+                release {
+                    signingConfig signingConfigs.release
+                    minifyEnabled false
+                    shrinkResources false
+                }
+            }
+        }
+        EOF
+
+        cd android
+        chmod +x gradlew
+        ./gradlew assembleRelease bundleRelease
+
+    - name: 9. Package Output Files
+      run: |
+        mkdir -p release-output
+        cp android/app/build/outputs/apk/release/app-release.apk release-output/Yarvo-v1.0-Release.apk
+        cp android/app/build/outputs/bundle/release/app-release.aab release-output/Yarvo-v1.0-Bazaar.aab
+        cp android/app/yarvo-release-key.jks release-output/yarvo-release-key.jks
+
+    - name: 10. Upload Final Package (APK + AAB + Keystore)
+      uses: actions/upload-artifact@v4
+      with:
+        name: Yarvo-Android-Release-Package
+        path: release-output/
