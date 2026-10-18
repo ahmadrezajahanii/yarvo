@@ -34,14 +34,22 @@ jobs:
         mkdir -p www
         cp index.html www/index.html
 
-    - name: 5. Initialize Capacitor & Android Platform
+    - name: 5. Initialize Capacitor & Native Share/Filesystem Plugins
       run: |
+        cat << 'EOF' > capacitor.config.json
+        {
+          "appId": "ir.jahani.yarvo",
+          "appName": "یار‌وو",
+          "webDir": "www",
+          "bundledWebRuntime": true
+        }
+        EOF
         if [ ! -f "package.json" ]; then
           npm init -y
         fi
-        npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
+        npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6 @capacitor/share@6 @capacitor/filesystem@6
         npx cap add android
-        npx cap copy android
+        npx cap sync android
 
     - name: 6. Restore Yarvo Logos & Set Persian App Name
       run: |
