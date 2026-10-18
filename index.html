@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>یار‌وو | Yarvo</title>
+    <title>یار‌وو | Yarvo — همراه تو در تمام مسیر زندگی</title>
     <style>
         :root {
             --bg: #0b1120;
@@ -19,6 +19,21 @@
             --danger: #ef4444;
             --border: rgba(255, 255, 255, 0.08);
             --radius: 16px;
+        }
+
+        body.light-mode {
+            --bg: #f1f5f9;
+            --surface: #ffffff;
+            --surface-light: #e2e8f0;
+            --text: #0f172a;
+            --muted: #64748b;
+            --primary: #0284c7;
+            --primary-dark: #0369a1;
+            --accent: #9333ea;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --border: rgba(15, 23, 42, 0.1);
         }
 
         * {
@@ -37,12 +52,12 @@
             display: flex;
             flex-direction: column;
             overflow: hidden;
+            transition: background 0.25s, color 0.25s;
         }
 
-        /* ========== ۱. هدر بالای اپ با ساعت زنده موبایل ========== */
+        /* ========== ۱. هدر بالای اپ + نوار گیمیفیکیشن ========== */
         .app-bar {
-            background: rgba(30, 41, 59, 0.92);
-            backdrop-filter: blur(12px);
+            background: var(--surface);
             border-bottom: 1px solid var(--border);
             padding: 10px 14px;
             display: flex;
@@ -51,38 +66,63 @@
             z-index: 20;
             flex-shrink: 0;
         }
-        .brand-area { display: flex; align-items: center; gap: 10px; }
+        .brand-area { display: flex; align-items: center; gap: 9px; }
         .brand-logo-circle {
             width: 36px; height: 36px; border-radius: 10px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 1.1rem; color: #fff;
+            font-weight: bold; font-size: 1.15rem; color: #fff;
         }
-        .brand-texts h1 { font-size: 1rem; color: var(--text); display: flex; align-items: center; gap: 6px; }
-        .brand-texts h1 span { font-size: 0.75rem; color: var(--primary); font-weight: normal; }
-        .brand-texts p { font-size: 0.68rem; color: var(--muted); }
-        
-        .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
-        .streak-pill {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #34d399;
-            padding: 3px 9px;
-            border-radius: 20px;
-            font-size: 0.72rem;
+        .brand-texts h1 { font-size: 0.98rem; color: var(--text); display: flex; align-items: center; gap: 5px; }
+        .brand-texts h1 span { font-size: 0.74rem; color: var(--primary); font-weight: normal; }
+        .brand-texts p { font-size: 0.66rem; color: var(--muted); }
+
+        .header-actions { display: flex; align-items: center; gap: 6px; }
+        .top-chip {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
             font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
         }
-        .live-clock {
-            font-size: 0.68rem;
-            color: var(--muted);
-            direction: ltr;
+        .theme-btn {
+            background: var(--surface-light);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* ========== ۲. فضای محتوای صفحات ========== */
+        /* نوار وضعیت XP، ساعت و سپر استمرار */
+        .status-subbar {
+            background: var(--bg);
+            border-bottom: 1px solid var(--border);
+            padding: 5px 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.7rem;
+            color: var(--muted);
+            flex-shrink: 0;
+        }
+        .xp-badge { color: var(--accent); font-weight: bold; }
+        .shield-badge { color: var(--primary); font-weight: bold; cursor: pointer; }
+
+        /* ========== ۲. فضای صفحات (۵ تب) ========== */
         .views-wrapper {
             flex: 1;
             overflow-y: auto;
-            padding: 14px 14px 90px 14px;
+            padding: 12px 12px 88px 12px;
             max-width: 768px;
             width: 100%;
             margin: 0 auto;
@@ -90,49 +130,94 @@
         .view-page { display: none; animation: fadeIn 0.2s ease-out; }
         .view-page.active { display: block; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(5px); }
+            from { opacity: 0; transform: translateY(4px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ========== ۳. کارت وضعیت امروز ========== */
+        /* ========== ۳. ابزارهای ADHD بالای صفحه امروز ========== */
+        .adhd-ActionBar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .adhd-hero-btn {
+            background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(168, 85, 247, 0.15));
+            border: 1px solid var(--primary);
+            color: var(--text);
+            padding: 9px 10px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        .energy-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            background: var(--surface);
+            padding: 5px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            margin-bottom: 12px;
+        }
+        .energy-btn {
+            background: transparent;
+            color: var(--muted);
+            border: none;
+            padding: 6px 4px;
+            border-radius: 8px;
+            font-size: 0.72rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .energy-btn.active {
+            background: var(--primary);
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* ========== ۴. کارت تاریخ و پیشرفت امروز ========== */
         .date-hero-card {
-            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 14px;
-            margin-bottom: 14px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+            padding: 13px;
+            margin-bottom: 12px;
         }
         .date-switcher {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            padding-bottom: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 8px;
             border-bottom: 1px solid var(--border);
         }
         .nav-icon-btn {
             background: var(--surface-light);
             color: var(--text);
             border: none;
-            width: 34px;
-            height: 34px;
-            border-radius: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 9px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .date-center-box { text-align: center; cursor: pointer; position: relative; }
-        .date-center-box .jalali-main { font-size: 0.92rem; font-weight: bold; color: var(--primary); }
-        .date-center-box .iso-sub { font-size: 0.7rem; color: var(--muted); }
+        .date-center-box .jalali-main { font-size: 0.9rem; font-weight: bold; color: var(--primary); }
+        .date-center-box .iso-sub { font-size: 0.68rem; color: var(--muted); }
 
-        .hero-progress-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+        .hero-progress-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
         .progress-info { flex: 1; }
-        .progress-info h3 { font-size: 0.86rem; color: #e2e8f0; }
         .progress-bar-bg {
-            height: 10px; background: #0b1120; border-radius: 10px;
+            height: 9px; background: var(--bg); border-radius: 10px;
             overflow: hidden; border: 1px solid var(--border);
         }
         .progress-bar-fill {
@@ -141,16 +226,16 @@
             width: 0%;
             transition: width 0.35s ease;
         }
-        .progress-numbers { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
+        .progress-numbers { display: flex; justify-content: space-between; font-size: 0.7rem; color: var(--muted); margin-top: 5px; }
         .pct-circle {
-            width: 54px; height: 54px; border-radius: 50%;
+            width: 52px; height: 52px; border-radius: 50%;
             background: rgba(56, 189, 248, 0.1);
             border: 2px solid var(--primary);
             display: flex; align-items: center; justify-content: center;
-            font-weight: bold; font-size: 0.95rem; color: var(--primary); flex-shrink: 0;
+            font-weight: bold; font-size: 0.92rem; color: var(--primary); flex-shrink: 0;
         }
 
-        /* ========== ۴. آکاردئون دسته‌بندی‌ها ========== */
+        /* ========== ۵. آکاردئون بخش‌ها + تایم‌ترکینگ و ریزقدم‌ها ========== */
         .cat-accordion {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -159,152 +244,216 @@
             overflow: hidden;
         }
         .cat-acc-header {
-            padding: 13px 14px;
+            padding: 12px 13px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
+            gap: 6px;
         }
-        .cat-acc-title { display: flex; align-items: center; gap: 8px; font-size: 0.86rem; font-weight: bold; }
-        .cat-mini-badge { font-size: 0.72rem; padding: 2px 8px; border-radius: 8px; background: var(--bg); color: var(--primary); }
-        .cat-acc-body { padding: 4px 14px 12px 14px; border-top: 1px solid var(--border); display: block; }
+        .cat-acc-title { display: flex; align-items: center; gap: 7px; font-size: 0.85rem; font-weight: bold; flex: 1; }
+        .cat-acc-meta { display: flex; align-items: center; gap: 6px; }
+        .cat-mini-badge { font-size: 0.7rem; padding: 2px 7px; border-radius: 7px; background: var(--bg); color: var(--primary); }
+        .timer-pill-btn {
+            background: rgba(168, 85, 247, 0.15);
+            border: 1px solid rgba(168, 85, 247, 0.4);
+            color: var(--accent);
+            padding: 3px 8px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .cat-acc-body { padding: 4px 13px 12px 13px; border-top: 1px solid var(--border); display: block; }
         .cat-accordion.collapsed .cat-acc-body { display: none; }
         .cat-accordion.collapsed .chevron { transform: rotate(90deg); }
-        .chevron { transition: transform 0.2s; font-size: 0.75rem; color: var(--muted); }
+        .chevron { transition: transform 0.2s; font-size: 0.72rem; color: var(--muted); }
 
-        .task-row {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 10px 0; border-bottom: 1px dashed rgba(255,255,255,0.06); gap: 8px;
+        .task-wrapper {
+            border-bottom: 1px dashed var(--border);
+            padding: 9px 0;
         }
-        .task-row:last-child { border-bottom: none; }
-        .task-label { display: flex; align-items: center; gap: 10px; flex: 1; font-size: 0.85rem; cursor: pointer; line-height: 1.4; }
-        .task-label input { width: 20px; height: 20px; accent-color: var(--success); flex-shrink: 0; }
+        .task-wrapper:last-child { border-bottom: none; }
+        .task-row {
+            display: flex; align-items: center; justify-content: space-between; gap: 8px;
+        }
+        .task-label { display: flex; align-items: center; gap: 9px; flex: 1; font-size: 0.84rem; cursor: pointer; line-height: 1.4; }
+        .task-label input { width: 19px; height: 19px; accent-color: var(--success); flex-shrink: 0; }
         .task-row.done .task-label span { text-decoration: line-through; color: var(--muted); }
-        .icon-btn { background: transparent; border: none; cursor: pointer; font-size: 0.9rem; opacity: 0.75; color: var(--text); padding: 4px 6px; }
+        .priority-badge {
+            font-size: 0.65rem;
+            background: rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 1px 6px;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+        .subtasks-box {
+            margin: 6px 26px 2px 0;
+            padding: 6px 10px;
+            background: var(--bg);
+            border-radius: 8px;
+            border-right: 2px solid var(--primary);
+        }
+        .subtask-item {
+            display: flex; align-items: center; gap: 7px; font-size: 0.76rem; padding: 3px 0; color: var(--muted); cursor: pointer;
+        }
+        .subtask-item.done span { text-decoration: line-through; opacity: 0.6; }
 
-        /* ========== ۵. کارت‌ها و دکمه‌ها ========== */
+        /* ========== ۶. کارت‌ها و دکمه‌های عمومی ========== */
         .section-card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 15px;
-            margin-bottom: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
         }
         .section-card h3 {
-            font-size: 0.9rem; color: var(--primary); margin-bottom: 10px;
+            font-size: 0.88rem; color: var(--primary); margin-bottom: 10px;
             display: flex; justify-content: space-between; align-items: center;
         }
         .btn {
             background: var(--primary); color: #000; border: none;
-            padding: 10px 14px; border-radius: 10px; font-weight: bold;
-            font-size: 0.8rem; cursor: pointer;
-            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+            padding: 9px 12px; border-radius: 10px; font-weight: bold;
+            font-size: 0.78rem; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 5px;
         }
-        .btn:active { opacity: 0.8; transform: scale(0.98); }
+        .btn:active { transform: scale(0.98); }
         .btn.secondary { background: var(--surface-light); color: var(--text); }
         .btn.success { background: var(--success); color: #000; }
         .btn.purple { background: var(--accent); color: #fff; }
+        .btn.warning { background: var(--warning); color: #000; }
         .btn.danger { background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid var(--danger); }
 
-        input[type="text"], select, textarea {
+        input[type="text"], input[type="password"], input[type="number"], select, textarea {
             background: var(--bg); color: var(--text);
             border: 1px solid var(--surface-light);
-            padding: 10px 12px; border-radius: 10px;
-            width: 100%; font-size: 0.84rem; user-select: text;
+            padding: 9px 11px; border-radius: 10px;
+            width: 100%; font-size: 0.82rem; user-select: text;
         }
 
-        /* ========== ۶. نمودارها ========== */
-        .segmented-tabs {
-            display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;
-            background: var(--bg); padding: 4px; border-radius: 12px;
-            margin-bottom: 14px; border: 1px solid var(--border);
-        }
-        .seg-btn {
-            background: transparent; color: var(--muted); border: none;
-            padding: 8px 4px; border-radius: 8px; font-size: 0.72rem; cursor: pointer;
-        }
-        .seg-btn.active { background: var(--primary); color: #000; font-weight: bold; }
-        .kpi-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
-        .kpi-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px; text-align: center; }
-        .kpi-card span { display: block; font-size: 1.15rem; font-weight: bold; color: var(--success); margin-top: 2px; }
-        .kpi-card small { font-size: 0.7rem; color: var(--muted); }
-        .bars-box { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; height: 130px; align-items: end; padding-top: 20px; overflow-x: auto; }
-        .bar-col { display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; min-width: 34px; }
-        .bar-fill { width: 100%; max-width: 32px; border-radius: 6px 6px 0 0; min-height: 4px; }
-        .bar-val { font-size: 0.65rem; margin-bottom: 3px; }
-        .bar-lbl { font-size: 0.65rem; color: var(--muted); margin-top: 5px; white-space: nowrap; }
-
-        /* ========== ۷. نوار پایین صفحه ========== */
+        /* ========== ۷. نوار پایین صفحه (۵ تب) ========== */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0; height: 66px;
-            background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px);
+            background: var(--surface);
             border-top: 1px solid var(--border);
-            display: grid; grid-template-columns: repeat(4, 1fr);
+            display: grid; grid-template-columns: repeat(5, 1fr);
             z-index: 30; max-width: 768px; margin: 0 auto;
         }
         .nav-tab {
             background: transparent; border: none; color: var(--muted);
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 4px; font-size: 0.72rem; cursor: pointer; position: relative;
+            gap: 3px; font-size: 0.68rem; cursor: pointer; position: relative;
         }
-        .nav-tab .nav-ico { font-size: 1.2rem; }
+        .nav-tab .nav-ico { font-size: 1.15rem; }
         .nav-tab.active { color: var(--primary); font-weight: bold; }
         .nav-tab.active::before {
-            content: ''; position: absolute; top: 0; width: 32px; height: 3px;
+            content: ''; position: absolute; top: 0; width: 28px; height: 3px;
             background: var(--primary); border-radius: 0 0 4px 4px;
         }
 
-        /* ========== ۸. دکمه شناور و پاپ‌آپ ========== */
-        .fab-btn {
-            position: fixed; bottom: 80px; left: 18px; width: 52px; height: 52px;
-            border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #fff; border: none; font-size: 1.6rem;
-            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
-            cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 25;
-        }
+        /* ========== ۸. مودال‌ها: تمرکز تک‌کاره (Zen)، تایمر بصری، تسک و قفل PIN ========== */
         .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75);
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(6px);
             display: none; align-items: center; justify-content: center;
-            padding: 16px; z-index: 50;
+            padding: 16px; z-index: 60;
         }
         .modal-card {
             background: var(--surface); border: 1px solid var(--surface-light);
             border-radius: var(--radius); padding: 18px; width: 100%; max-width: 440px;
+            max-height: 90vh; overflow-y: auto;
         }
-        .days-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+
+        /* دایره تایمر بصری ضد کوری زمانی */
+        .timer-circle-wrap {
+            width: 190px; height: 190px; margin: 15px auto;
+            border-radius: 50%;
+            background: conic-gradient(var(--primary) 360deg, var(--bg) 0deg);
+            display: flex; align-items: center; justify-content: center;
+            position: relative;
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.25);
+        }
+        .timer-circle-inner {
+            width: 158px; height: 158px; border-radius: 50%;
+            background: var(--surface);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .timer-digits { font-size: 2rem; font-weight: bold; color: var(--text); direction: ltr; }
+
+        /* نمودارها */
+        .segmented-tabs {
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;
+            background: var(--bg); padding: 4px; border-radius: 12px;
+            margin-bottom: 12px; border: 1px solid var(--border);
+        }
+        .seg-btn {
+            background: transparent; color: var(--muted); border: none;
+            padding: 7px 4px; border-radius: 8px; font-size: 0.7rem; cursor: pointer;
+        }
+        .seg-btn.active { background: var(--primary); color: #000; font-weight: bold; }
+        .kpi-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 12px; }
+        .kpi-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 9px; text-align: center; }
+        .kpi-card span { display: block; font-size: 1.1rem; font-weight: bold; color: var(--success); margin-top: 2px; }
+        .kpi-card small { font-size: 0.68rem; color: var(--muted); }
+        .bars-box { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; height: 125px; align-items: end; padding-top: 18px; overflow-x: auto; }
+        .bar-col { display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; min-width: 32px; }
+        .bar-fill { width: 100%; max-width: 30px; border-radius: 6px 6px 0 0; min-height: 4px; }
+        .bar-val { font-size: 0.62rem; margin-bottom: 2px; }
+        .bar-lbl { font-size: 0.62rem; color: var(--muted); margin-top: 4px; white-space: nowrap; }
+
+        .fab-btn {
+            position: fixed; bottom: 78px; left: 16px; width: 50px; height: 50px;
+            border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff; border: none; font-size: 1.5rem;
+            box-shadow: 0 6px 18px rgba(56, 189, 248, 0.4);
+            cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 25;
+        }
+        .days-chips { display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0; }
         .day-chip {
             background: var(--bg); border: 1px solid var(--surface-light);
-            color: var(--muted); padding: 5px 10px; border-radius: 8px;
-            font-size: 0.75rem; cursor: pointer;
+            color: var(--muted); padding: 4px 9px; border-radius: 8px;
+            font-size: 0.72rem; cursor: pointer;
         }
         .day-chip.selected {
             background: rgba(56, 189, 248, 0.2); border-color: var(--primary);
             color: var(--primary); font-weight: bold;
         }
-        .notice-banner {
-            background: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning);
-            color: #fcd34d; padding: 9px 12px; border-radius: 12px;
-            margin-bottom: 12px; font-size: 0.78rem; display: none;
-        }
         .manage-row {
             display: flex; justify-content: space-between; align-items: center;
-            background: var(--bg); padding: 9px 12px; border-radius: 10px;
-            margin-bottom: 8px; font-size: 0.8rem; gap: 8px;
+            background: var(--bg); padding: 8px 10px; border-radius: 10px;
+            margin-bottom: 7px; font-size: 0.78rem; gap: 8px;
         }
         .toast-msg {
-            position: fixed; bottom: 80px; right: 16px; left: 16px;
-            background: #10b981; color: #000; font-weight: bold;
+            position: fixed; bottom: 78px; right: 16px; left: 16px;
+            background: var(--success); color: #000; font-weight: bold;
             padding: 10px 14px; border-radius: 10px; text-align: center;
-            font-size: 0.82rem; z-index: 100; display: none;
+            font-size: 0.8rem; z-index: 120; display: none;
             box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        #confettiCanvas {
+            position: fixed; inset: 0; pointer-events: none; z-index: 110; display: none;
         }
     </style>
 </head>
 <body>
 
+    <canvas id="confettiCanvas"></canvas>
     <div class="toast-msg" id="toastMsg"></div>
 
-    <!-- هدر ثابت بالا با نمایش ساعت زنده گوشی -->
+    <!-- قفل امنیتی PIN در بدو ورود -->
+    <div class="modal-overlay" id="pinLockModal" style="z-index: 200; background: var(--bg);">
+        <div class="modal-card" style="text-align: center; max-width: 320px;">
+            <div class="brand-logo-circle" style="margin: 0 auto 12px auto; width: 50px; height: 50px; font-size: 1.5rem;">🔒</div>
+            <h3 style="margin-bottom: 8px; color: var(--primary);">قفل امنیتی یار‌وو</h3>
+            <p style="font-size: 0.76rem; color: var(--muted); margin-bottom: 14px;">رمز ۴ رقمی خود را وارد کنید:</p>
+            <input type="password" id="pinUnlockInput" maxlength="4" style="text-align: center; font-size: 1.4rem; letter-spacing: 8px; margin-bottom: 12px;" placeholder="••••">
+            <button class="btn success" style="width: 100%; padding: 11px;" onclick="verifyPinLock()">ورود به یار‌وو</button>
+        </div>
+    </div>
+
+    <!-- هدر ثابت بالا -->
     <header class="app-bar">
         <div class="brand-area">
             <div class="brand-logo-circle">Y</div>
@@ -313,22 +462,44 @@
                 <p>همراه تو در تمام مسیر زندگی</p>
             </div>
         </div>
-        <div class="header-right">
-            <div class="streak-pill" id="headerStreak">🔥 0 روز استمرار</div>
-            <div class="live-clock" id="deviceClock">--:--:--</div>
+        <div class="header-actions">
+            <div class="top-chip" id="headerStreak" onclick="useStreakShieldPrompt()">🔥 0 روز</div>
+            <button class="theme-btn" id="themeToggleBtn" onclick="toggleTheme()" title="تغییر تم روشن/تاریک">☀️</button>
         </div>
     </header>
 
+    <!-- نوار گیمیفیکیشن، سپر استمرار و ساعت زنده گوشی -->
+    <div class="status-subbar">
+        <span class="xp-badge" id="xpLevelDisplay">⭐ سطح 1 (0 XP)</span>
+        <span class="shield-badge" id="shieldCountDisplay" onclick="useStreakShieldPrompt()">🛡️ 1 سپر محافظ</span>
+        <span id="deviceClock" style="direction:ltr;">--:--:--</span>
+    </div>
+
     <main class="views-wrapper">
 
-        <!-- ==================== صفحه ۱: برنامه امروز ==================== -->
+        <!-- ==================== تب ۱: برنامه امروز + جعبه ابزار ADHD ==================== -->
         <section id="view-today" class="view-page active">
+            
+            <!-- دکمه‌های سریع ADHD: تمرکز تک‌کاره (Zen) و گردونه شانس (Roulette) -->
+            <div class="adhd-ActionBar">
+                <button class="adhd-hero-btn" onclick="openZenFocusMode()">🎯 تمرکز تک‌کاره (Zen)</button>
+                <button class="adhd-hero-btn" onclick="spinTaskRoulette()">🎲 گردونه شروع کار</button>
+            </div>
+
+            <!-- کلید ۳ حالته سطح انرژی روزانه (مخصوص نوسان انرژی ADHD) -->
+            <div class="energy-selector">
+                <button class="energy-btn active" id="eng-high" onclick="setEnergyMode('high')">🔥 پرانرژی (کامل)</button>
+                <button class="energy-btn" id="eng-normal" onclick="setEnergyMode('normal')">⚖️ انرژی معمولی</button>
+                <button class="energy-btn" id="eng-low" onclick="setEnergyMode('low')">🔋 باتری ضعیف (حالت بقا)</button>
+            </div>
+
+            <!-- کارت تاریخ و پیشرفت امروز -->
             <div class="date-hero-card">
                 <div class="date-switcher">
                     <button class="nav-icon-btn" onclick="changeDate(-1)">❯</button>
                     <label class="date-center-box">
                         <div class="jalali-main" id="todayJalaliTitle">در حال بارگذاری...</div>
-                        <div class="iso-sub"><span id="todayIsoTitle"></span> (تغییر تاریخ 📅)</div>
+                        <div class="iso-sub"><span id="todayIsoTitle"></span> | ⏱️ کارکرد امروز: <strong id="todayTotalMinutes" style="color:var(--accent);">0 دقیقه</strong></div>
                         <input type="date" id="hiddenDatePicker" style="position:absolute; inset:0; opacity:0; width:100%; height:100%; cursor:pointer;" onchange="onDatePick(this.value)">
                     </label>
                     <button class="nav-icon-btn" onclick="changeDate(1)">❮</button>
@@ -336,32 +507,49 @@
 
                 <div class="hero-progress-row">
                     <div class="progress-info">
-                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                            <h3>پیشرفت برنامه امروز</h3>
-                            <button class="btn secondary" style="padding:3px 8px; font-size:0.7rem;" onclick="goToToday()">امروز (ساعت گوشی)</button>
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                            <span style="font-size:0.8rem; font-weight:bold;">پیشرفت امروز</span>
+                            <button class="btn secondary" style="padding:2px 8px; font-size:0.68rem;" onclick="goToToday()">برگشت به امروز</button>
                         </div>
                         <div class="progress-bar-bg">
                             <div class="progress-bar-fill" id="todayProgressBar"></div>
                         </div>
                         <div class="progress-numbers">
-                            <span id="todayDoneCount">0 از 0 کار انجام شده</span>
-                            <span>هدف روزانه: +۷۰٪</span>
+                            <span id="todayDoneCount">0 از 0 کار</span>
+                            <span id="shieldStatusToday">هدف: +۷۰٪</span>
                         </div>
                     </div>
                     <div class="pct-circle" id="todayPctCircle">0%</div>
                 </div>
             </div>
 
-            <div id="specialDayNotice" class="notice-banner"></div>
+            <!-- لیست بخش‌ها و کارهای امروز -->
             <div id="todayCategoriesList"></div>
 
-            <div class="section-card" style="margin-top: 12px;">
+            <!-- یادداشت روزانه -->
+            <div class="section-card" style="margin-top: 10px;">
                 <h3>📝 یادداشت و دستاوردهای امروز</h3>
                 <textarea id="dailyNoteInput" rows="2" placeholder="خلاصه دستاوردها، تعداد فاکتورها، مطالعه یا نکات مهم امروز..." oninput="saveDailyNote(this.value)"></textarea>
             </div>
         </section>
 
-        <!-- ==================== صفحه ۲: نمودار و آمار روند ==================== -->
+        <!-- ==================== تب ۲: پارکینگ تخلیه فوری ذهن (Brain Dump) ==================== -->
+        <section id="view-brain" class="view-page">
+            <div class="section-card">
+                <h3>💭 پارکینگ تخلیه فوری ذهن (Brain Dump)</h3>
+                <p style="font-size:0.75rem; color:var(--muted); margin-bottom:10px;">
+                    وقتی وسط مطالعه دکتری یا کار، فکری به ذهنتان می‌رسد، سریع اینجا بنویسید یا با میکروفون بگویید تا تمرکزتان به هم نخورد:
+                </p>
+                <div style="display:flex; gap:6px; margin-bottom:10px;">
+                    <input type="text" id="brainDumpInput" placeholder="ایده یا کار ناگهانی را بنویسید...">
+                    <button class="btn purple" onclick="startVoiceBrainDump()" title="تبدیل گفتار به متن">🎤</button>
+                    <button class="btn success" onclick="addBrainDumpItem()">ثبت</button>
+                </div>
+                <div id="brainDumpListContainer"></div>
+            </div>
+        </section>
+
+        <!-- ==================== تب ۳: آمار و روند (۵ سطحی + ساعت کارکرد) ==================== -->
         <section id="view-stats" class="view-page">
             <div class="section-card">
                 <h3>📈 تحلیل روند و استمرار</h3>
@@ -379,8 +567,8 @@
                         <span id="statAvgVal">0%</span>
                     </div>
                     <div class="kpi-card">
-                        <small>روزهای فعال ثبت‌شده</small>
-                        <span id="statActiveDays">0 روز</span>
+                        <small>مجموع زمان تمرکز ثبت‌شده</small>
+                        <span id="statTotalHours" style="color:var(--accent);">0 ساعت</span>
                     </div>
                     <div class="kpi-card">
                         <small>روزهای طلایی (+۷۰٪)</small>
@@ -396,26 +584,24 @@
             </div>
 
             <div class="section-card">
-                <h3>🎯 تفکیک عملکرد هر بخش در این بازه</h3>
+                <h3>🎯 تفکیک عملکرد و ساعت کارکرد هر بخش</h3>
                 <div id="statsCategoryBreakdown"></div>
             </div>
         </section>
 
-        <!-- ==================== صفحه ۳: گزارش‌ساز رسمی ==================== -->
+        <!-- ==================== تب ۴: گزارش‌ساز رسمی (۵ سطحی) ==================== -->
         <section id="view-reports" class="view-page">
             <div class="section-card">
                 <h3>📄 تولیدکننده متن رسمی گزارش‌ها</h3>
-                <p style="font-size:0.76rem; color:var(--muted); margin-bottom:10px;">ابتدا روی یکی از ۵ دکمه زیر بزنید تا گزارش ساخته شود، سپس آن را به اشتراک بگذارید یا کپی کنید:</p>
-                
                 <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin-bottom:8px;">
                     <button class="btn" onclick="generateFormattedReport('1d')">📋 گزارش روزانه</button>
                     <button class="btn" onclick="generateFormattedReport('7d')">📋 گزارش هفتگی</button>
                     <button class="btn" onclick="generateFormattedReport('30d')">📋 گزارش ماهانه</button>
                     <button class="btn" onclick="generateFormattedReport('365d')">📋 گزارش سالانه</button>
                 </div>
-                <button class="btn purple" style="width:100%; margin-bottom:12px;" onclick="generateFormattedReport('all')">🌟 تولید گزارش کل (آرشیو جامع)</button>
+                <button class="btn purple" style="width:100%; margin-bottom:10px;" onclick="generateFormattedReport('all')">🌟 تولید گزارش کل (آرشیو جامع ۱۰ ساله)</button>
 
-                <textarea id="reportTextOutput" rows="9" placeholder="روی یکی از دکمه‌های بالا بزنید تا متن گزارش در اینجا ساخته شود..."></textarea>
+                <textarea id="reportTextOutput" rows="9" placeholder="روی یکی از دکمه‌های بالا بزنید تا متن گزارش همراه با ساعت کارکرد هر بخش ساخته شود..."></textarea>
 
                 <div style="display:flex; gap:8px; margin-top:10px;">
                     <button class="btn success" style="flex:1;" onclick="shareReportText()">📤 اشتراک‌گذاری در برنامه‌ها</button>
@@ -425,13 +611,13 @@
 
             <div class="section-card">
                 <h3>📊 خروجی فایل اکسل (CSV تاریخچه)</h3>
-                <p style="font-size:0.75rem; color:var(--muted); margin-bottom:10px;">فایل اکسل کل تاریخچه ساخته می‌شود و منوی ذخیره/ارسال گوشی باز می‌گردد:</p>
-                <button class="btn warning" style="width:100%; color:#000;" onclick="exportCSV()">📊 ساخت و ارسال/ذخیره فایل اکسل (CSV)</button>
+                <button class="btn warning" style="width:100%;" onclick="exportCSV()">📊 ساخت و ارسال فایل اکسل (CSV)</button>
             </div>
         </section>
 
-        <!-- ==================== صفحه ۴: مدیریت و پشتیبان‌گیری ==================== -->
+        <!-- ==================== تب ۵: مدیریت، امنیت و پشتیبان‌گیری ==================== -->
         <section id="view-manage" class="view-page">
+            <!-- مدیریت بخش‌ها -->
             <div class="section-card">
                 <h3>🗂️ ۱. مدیریت بخش‌های اصلی (کم/زیاد/تغییر نام)</h3>
                 <input type="hidden" id="editCatId" value="">
@@ -445,74 +631,145 @@
                 <div id="manageCatsContainer"></div>
             </div>
 
+            <!-- مدیریت کارها -->
             <div class="section-card">
                 <h3>
                     <span>📋 ۲. فهرست کل کارهای تعریف‌شده</span>
                     <button class="btn" style="padding:5px 10px; font-size:0.74rem;" onclick="openTaskModal()">+ کار جدید</button>
                 </h3>
-                <div id="manageTasksContainer" style="max-height: 250px; overflow-y: auto;"></div>
+                <div id="manageTasksContainer" style="max-height: 240px; overflow-y: auto;"></div>
             </div>
 
-            <!-- بخش پشتیبان‌گیری دوگانه (فایلی + متنی ضدخطا برای اندروید) -->
+            <!-- قفل امنیتی برنامه (PIN Lock) -->
             <div class="section-card">
-                <h3>💾 ۳. پشتیبان‌گیری و انتقال اطلاعات</h3>
-                <p style="font-size:0.75rem; color:var(--muted); margin-bottom:10px;">روش اول: ارسال یا دریافت فایل پشتیبان (`.json`):</p>
-                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+                <h3>🔒 ۳. قفل امنیتی برنامه (PIN چهار رقمی)</h3>
+                <div style="display:flex; gap:8px;">
+                    <input type="password" id="pinSetupInput" maxlength="4" placeholder="رمز ۴ رقمی جدید (خالی = غیرفعال)...">
+                    <button class="btn purple" style="white-space:nowrap;" onclick="savePinLockSetting()">ذخیره رمز</button>
+                </div>
+            </div>
+
+            <!-- پشتیبان‌گیری محلی -->
+            <div class="section-card">
+                <h3>💾 ۴. پشتیبان‌گیری محلی و انتقال اطلاعات</h3>
+                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
                     <button class="btn success" style="flex:1;" onclick="downloadBackupJSON()">📤 ذخیره / ارسال فایل بکاپ</button>
                     <label class="btn secondary" style="flex:1; cursor:pointer;">
-                        📥 انتخاب فایل بکاپ از گوشی
+                        📥 انتخاب فایل بکاپ
                         <input type="file" accept="*/*" style="display:none;" onchange="importBackupJSON(event)">
                     </label>
                 </div>
-
-                <p style="font-size:0.75rem; color:var(--muted); margin-bottom:8px;">روش دوم (فوق‌سریع برای موبایل): کپی یا جایگذاری کد پشتیبان:</p>
-                <textarea id="backupCodeBox" rows="3" placeholder="برای بازیابی از متن، کد بکاپ قبلی را اینجا Paste کنید و دکمه بازیابی را بزنید..."></textarea>
-                <div style="display:flex; gap:8px; margin-top:8px; margin-bottom:14px;">
-                    <button class="btn secondary" style="flex:1;" onclick="exportBackupToText()">📋 تولید و کپی کد بکاپ</button>
-                    <button class="btn purple" style="flex:1;" onclick="importBackupFromText()">🔄 بازیابی از کد بالا</button>
+                <textarea id="backupCodeBox" rows="2" placeholder="کد متنی پشتیبان..."></textarea>
+                <div style="display:flex; gap:8px; margin-top:6px; margin-bottom:10px;">
+                    <button class="btn secondary" style="flex:1;" onclick="exportBackupToText()">📋 کپی کد بکاپ</button>
+                    <button class="btn purple" style="flex:1;" onclick="importBackupFromText()">🔄 بازیابی از کد</button>
                 </div>
-
-                <button class="btn danger" style="width:100%; font-size:0.75rem;" onclick="resetToDefaultAll()">⚠️ بازگردانی بخش‌ها و کارها به حالت پیش‌فرض اولیه</button>
+                <button class="btn danger" style="width:100%; font-size:0.74rem;" onclick="resetToDefaultAll()">⚠️ بازگردانی بخش‌ها به پیش‌فرض اولیه</button>
             </div>
         </section>
 
     </main>
 
+    <!-- دکمه شناور افزودن کار -->
     <button class="fab-btn" id="fabAddBtn" onclick="openTaskModal()">+</button>
 
-    <!-- پنجره پاپ‌آپ افزودن/ویرایش کار -->
-    <div class="modal-overlay" id="taskModal">
-        <div class="modal-card">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                <h3 style="color:var(--primary); font-size:0.95rem;" id="modalTaskTitle">افزودن کار جدید</h3>
-                <button class="nav-icon-btn" onclick="closeTaskModal()">✖</button>
+    <!-- ==================== مودال ۱: حالت تمرکز تک‌کاره (Zen Mode) و گردونه شانس ==================== -->
+    <div class="modal-overlay" id="zenModal">
+        <div class="modal-card" style="text-align: center;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <span style="font-size:0.78rem; color:var(--accent); font-weight:bold;" id="zenModeBadge">🎯 حالت تمرکز تک‌کاره (ضد حواس‌پرتی)</span>
+                <button class="nav-icon-btn" onclick="closeZenModal()">✖</button>
             </div>
-            <input type="hidden" id="modalEditItemId" value="">
-            <div style="display:flex; flex-direction:column; gap:10px;">
-                <input type="text" id="modalTaskText" placeholder="عنوان کار یا عادت روزانه...">
-                <select id="modalTaskCat"></select>
-                <div>
-                    <small style="color:var(--muted); display:block; margin-bottom:4px;">روزهای تکرار در هفته:</small>
-                    <div class="days-chips" id="modalDaysChips"></div>
-                    <div style="display:flex; gap:6px; margin-top:4px;">
-                        <button class="btn secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="setModalPresetDays(['sat','sun','mon','tue','wed'])">شنبه تا چهارشنبه</button>
-                        <button class="btn secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="setModalPresetDays(['sat','sun','mon','tue','wed','thu','fri'])">همه روزها</button>
-                        <button class="btn secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="setModalPresetDays(['thu'])">پنج‌شنبه</button>
-                    </div>
+            <div style="background:var(--bg); border:2px solid var(--primary); border-radius:16px; padding:22px 14px; margin:12px 0;">
+                <small style="color:var(--muted); display:block; margin-bottom:6px;" id="zenCatName">بخش</small>
+                <h2 style="font-size:1.15rem; color:var(--text); line-height:1.6;" id="zenTaskTitle">عنوان کار</h2>
+                <div id="zenSubtasksBox" style="margin-top:12px; text-align:right;"></div>
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px; margin-bottom:8px;">
+                <button class="btn success" style="padding:12px;" onclick="completeZenTask()">✅ انجام شد (+10 XP)</button>
+                <button class="btn purple" style="padding:12px;" onclick="startZenTimer()">⏱️ شروع تایمر ۲۵ دقیقه</button>
+            </div>
+            <button class="btn secondary" style="width:100%;" onclick="nextZenTask()">⏭️ فعلاً رد شو، کار بعدی رو بیار</button>
+        </div>
+    </div>
+
+    <!-- ==================== مودال ۲: تایمر بصری ضد کوری زمانی (Visual Time-Timer) ==================== -->
+    <div class="modal-overlay" id="timerModal">
+        <div class="modal-card" style="text-align: center;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="color:var(--primary); font-size:0.92rem;" id="timerCatTitle">⏱️ تایمر بصری تمرکز</h3>
+                <button class="nav-icon-btn" onclick="closeTimerModal()">✖</button>
+            </div>
+
+            <div class="timer-circle-wrap" id="timerCircleVisual">
+                <div class="timer-circle-inner">
+                    <div class="timer-digits" id="timerDigits">25:00</div>
+                    <small style="color:var(--muted); font-size:0.72rem;" id="timerStatusText">آماده شروع</small>
                 </div>
-                <button class="btn success" style="width:100%; padding:11px; margin-top:6px;" onclick="saveModalTask()">✔ ذخیره در برنامه</button>
+            </div>
+
+            <div style="display:flex; justify-content:center; gap:6px; margin-bottom:12px;">
+                <button class="btn secondary" style="padding:5px 10px; font-size:0.72rem;" onclick="setTimerPreset(15)">۱۵ دقیقه</button>
+                <button class="btn secondary" style="padding:5px 10px; font-size:0.72rem;" onclick="setTimerPreset(25)">۲۵ دقیقه (پومودورو)</button>
+                <button class="btn secondary" style="padding:5px 10px; font-size:0.72rem;" onclick="setTimerPreset(45)">۴۵ دقیقه</button>
+            </div>
+
+            <div style="display:flex; gap:8px;">
+                <button class="btn success" style="flex:1; padding:11px;" id="timerStartPauseBtn" onclick="toggleVisualTimer()">▶️ شروع تمرکز</button>
+                <button class="btn purple" style="flex:1; padding:11px;" onclick="finishAndLogTimerEarly()">💾 ثبت زمان کارکرد</button>
             </div>
         </div>
     </div>
 
+    <!-- ==================== مودال ۳: افزودن/ویرایش کار + ریزقدم‌ها + اولویت ==================== -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h3 style="color:var(--primary); font-size:0.92rem;" id="modalTaskTitle">افزودن کار جدید</h3>
+                <button class="nav-icon-btn" onclick="closeTaskModal()">✖</button>
+            </div>
+            <input type="hidden" id="modalEditItemId" value="">
+            <div style="display:flex; flex-direction:column; gap:9px;">
+                <input type="text" id="modalTaskText" placeholder="عنوان کار یا عادت روزانه...">
+                <select id="modalTaskCat"></select>
+
+                <label style="display:flex; align-items:center; gap:8px; font-size:0.8rem; background:var(--bg); padding:8px 10px; border-radius:9px; cursor:pointer;">
+                    <input type="checkbox" id="modalTaskPriority" style="width:18px; height:18px; accent-color:var(--danger);">
+                    <span>🔥 کار فوری و حیاتی (نمایش در حالت «باتری ضعیف»)</span>
+                </label>
+
+                <div>
+                    <small style="color:var(--muted); display:block; margin-bottom:4px;">🪜 ریزقدم‌های ۲ دقیقه‌ای (هر خط یک قدم کوچک برای شروع آسان):</small>
+                    <textarea id="modalTaskSubtasks" rows="3" placeholder="مثلاً:&#10;۱. باز کردن فایل مقاله&#10;۲. نوشتن فقط ۳ خط اول"></textarea>
+                </div>
+
+                <div>
+                    <small style="color:var(--muted); display:block; margin-bottom:4px;">روزهای تکرار در هفته:</small>
+                    <div class="days-chips" id="modalDaysChips"></div>
+                    <div style="display:flex; gap:6px; margin-top:4px;">
+                        <button class="btn secondary" style="padding:4px 8px; font-size:0.68rem;" onclick="setModalPresetDays(['sat','sun','mon','tue','wed'])">شنبه تا چهارشنبه</button>
+                        <button class="btn secondary" style="padding:4px 8px; font-size:0.68rem;" onclick="setModalPresetDays(['sat','sun','mon','tue','wed','thu','fri'])">همه روزها</button>
+                        <button class="btn secondary" style="padding:4px 8px; font-size:0.68rem;" onclick="setModalPresetDays(['thu'])">پنج‌شنبه</button>
+                    </div>
+                </div>
+                <button class="btn success" style="width:100%; padding:11px; margin-top:4px;" onclick="saveModalTask()">✔ ذخیره در برنامه</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- نوار ناوبری پایین صفحه (۵ تب) -->
     <nav class="bottom-nav">
         <button class="nav-tab active" onclick="switchView('today', this)">
             <span class="nav-ico">📅</span>
             <span>امروز</span>
         </button>
+        <button class="nav-tab" onclick="switchView('brain', this)">
+            <span class="nav-ico">💭</span>
+            <span>پارکینگ ذهن</span>
+        </button>
         <button class="nav-tab" onclick="switchView('stats', this)">
             <span class="nav-ico">📈</span>
-            <span>آمار و روند</span>
+            <span>آمار و زمان</span>
         </button>
         <button class="nav-tab" onclick="switchView('reports', this)">
             <span class="nav-ico">📄</span>
@@ -536,7 +793,6 @@
         { id: 'sat', jsDay: 6, name: 'شنبه' }
     ];
 
-    // ساخت شیء تاریخ روی ساعت ۱۲ ظهر محلی گوشی برای جلوگیری از خطای Timezone در نیمه‌شب
     function parseSafeLocalDate(isoStr) {
         const [y, m, d] = isoStr.split('-').map(Number);
         return new Date(y, m - 1, d, 12, 0, 0);
@@ -558,17 +814,14 @@
         const dateObj = parseSafeLocalDate(isoStr);
         try {
             return new Intl.DateTimeFormat('fa-IR-u-ca-persian', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(dateObj);
-        } catch (e) {
-            return isoStr;
-        }
+        } catch (e) { return isoStr; }
     }
 
-    // بروزرسانی زنده ساعت از روی ساعت سیستم‌عامل گوشی
     function updateLiveClock() {
         const now = new Date();
         const timeStr = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         const el = document.getElementById('deviceClock');
-        if (el) el.innerText = `🕒 ساعت گوشی: ${timeStr}`;
+        if (el) el.innerText = `🕒 ${timeStr}`;
     }
     setInterval(updateLiveClock, 1000);
     updateLiveClock();
@@ -577,112 +830,77 @@
         const t = document.getElementById('toastMsg');
         t.innerText = msg;
         t.style.display = 'block';
-        setTimeout(() => { t.style.display = 'none'; }, 2800);
+        setTimeout(() => { t.style.display = 'none'; }, 2600);
     }
 
-    // ==================== ۲. پل ارتباطی بومی اندروید (Capacitor Native Share & File) ====================
-    async function nativeShareText(title, text) {
-        // ۱. تلاش با پلاگین رسمی Capacitor Share (در محیط اپ اندروید)
-        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share) {
-            try {
-                await window.Capacitor.Plugins.Share.share({
-                    title: title,
-                    text: text,
-                    dialogTitle: 'انتخاب برنامه برای اشتراک‌گذاری'
-                });
-                return;
-            } catch (e) {
-                console.log('Capacitor Share canceled or failed:', e);
-            }
-        }
-        // ۲. تلاش با Web Share API استاندارد
-        if (navigator.share) {
-            try {
-                await navigator.share({ title: title, text: text });
-                return;
-            } catch (e) {}
-        }
-        // ۳. در صورتی که روی مرورگر دسکتاپ باشد، کپی می‌کند
-        await copyTextUniversal(text);
-        showToast('متن در کلیپ‌بورد کپی شد!');
-    }
-
-    async function nativeExportAndShareFile(fileName, contentString, mimeType) {
-        // ۱. اگر داخل اپلیکیشن اندروید (Capacitor) هستیم: ذخیره در حافظه گوشی و باز کردن منوی Share اندروید
-        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Filesystem && window.Capacitor.Plugins.Share) {
-            try {
-                const writeRes = await window.Capacitor.Plugins.Filesystem.writeFile({
-                    path: fileName,
-                    data: contentString,
-                    directory: 'CACHE',
-                    encoding: 'utf8'
-                });
-                await window.Capacitor.Plugins.Share.share({
-                    title: fileName,
-                    text: `فایل خروجی از اپلیکیشن یار‌وو (${fileName})`,
-                    url: writeRes.uri,
-                    dialogTitle: 'ذخیره یا ارسال فایل با...'
-                });
-                return;
-            } catch (err) {
-                console.log('Native file share fallback:', err);
-            }
-        }
-
-        // ۲. تلاش با Web Share Files
-        if (navigator.canShare) {
-            try {
-                const file = new File([contentString], fileName, { type: mimeType });
-                if (navigator.canShare({ files: [file] })) {
-                    await navigator.share({ title: fileName, files: [file] });
-                    return;
-                }
-            } catch (e) {}
-        }
-
-        // ۳. دانلود استاندارد در مرورگر کامپیوتر
+    // ==================== ۲. صدای دوپامین (Web Audio API) و جشن Confetti ====================
+    function playDopamineSound(type = 'done') {
         try {
-            const blob = new Blob([contentString], { type: mimeType });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            showToast(`فایل ${fileName} آماده شد.`);
-        } catch (e) {
-            await nativeShareText(fileName, contentString);
-        }
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+
+            if (type === 'done') {
+                osc.frequency.setValueAtTime(523.25, ctx.currentTime); // C5
+                osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08); // E5
+                osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.16); // G5
+                gain.gain.setValueAtTime(0.15, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.35);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.35);
+            } else if (type === 'timer') {
+                osc.frequency.setValueAtTime(880, ctx.currentTime);
+                gain.gain.setValueAtTime(0.2, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.6);
+            }
+        } catch (e) {}
     }
 
-    async function copyTextUniversal(text) {
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            try {
-                await navigator.clipboard.writeText(text);
-                return true;
-            } catch (e) {}
+    function launchConfetti() {
+        const canvas = document.getElementById('confettiCanvas');
+        canvas.style.display = 'block';
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const ctx = canvas.getContext('2d');
+        const pieces = Array.from({ length: 45 }, () => ({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height * 0.3,
+            vx: (Math.random() - 0.5) * 6,
+            vy: Math.random() * 4 + 2,
+            color: ['#38bdf8', '#10b981', '#a855f7', '#f59e0b', '#ef4444'][Math.floor(Math.random() * 5)],
+            size: Math.random() * 6 + 4
+        }));
+        let frame = 0;
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            pieces.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                ctx.fillStyle = p.color;
+                ctx.fillRect(p.x, p.y, p.size, p.size);
+            });
+            frame++;
+            if (frame < 55) requestAnimationFrame(draw);
+            else canvas.style.display = 'none';
         }
-        const temp = document.createElement('textarea');
-        temp.value = text;
-        document.body.appendChild(temp);
-        temp.select();
-        document.execCommand('copy');
-        document.body.removeChild(temp);
-        return true;
+        draw();
     }
 
-    // ==================== ۳. دیتابیس و منطق برنامه ====================
+    // ==================== ۳. ساختار دیتابیس جامع یار‌وو ====================
     const defaultCategories = [
         {
             id: 'morning',
             title: '۱. روتین صبحگاهی (۰۵:۳۰ تا ۰۸:۰۰)',
             badge: 'انرژی و تمرکز',
             items: [
-                { id: 'm_exercise', text: 'ورزش صبحگاهی (پیاده‌روی / دوچرخه‌سواری)', days: ['sat','sun','mon','tue','wed','fri'] },
-                { id: 'm_shower_bf', text: 'دوش صبحگاهی و صرف صبحانه کامل', days: ['sat','sun','mon','tue','wed','thu','fri'] },
-                { id: 'm_lang', text: 'مطالعه زبان نوبت صبح (واژگان / گرامر آزمون جامع)', days: ['sat','sun','mon','tue','wed'] },
-                { id: 'm_phd', text: 'مطالعه دکتری نوبت صبح (مرور دروس آزمون جامع)', days: ['sat','sun','mon','tue','wed'] }
+                { id: 'm_exercise', text: 'ورزش صبحگاهی (پیاده‌روی / دوچرخه‌سواری)', days: ['sat','sun','mon','tue','wed','fri'], priority: false, subtasks: ['پوشیدن لباس ورزشی', '۱۵ دقیقه پیاده‌روی نرم'] },
+                { id: 'm_shower_bf', text: 'دوش صبحگاهی و صرف صبحانه کامل', days: ['sat','sun','mon','tue','wed','thu','fri'], priority: true, subtasks: [] },
+                { id: 'm_lang', text: 'مطالعه زبان نوبت صبح (واژگان / گرامر آزمون جامع)', days: ['sat','sun','mon','tue','wed'], priority: true, subtasks: ['مرور ۱۰ لغت فلش‌کارت', '۱ تست ریدینگ'] },
+                { id: 'm_phd', text: 'مطالعه دکتری نوبت صبح (مرور دروس آزمون جامع)', days: ['sat','sun','mon','tue','wed'], priority: true, subtasks: [] }
             ]
         },
         {
@@ -690,12 +908,12 @@
             title: '۲. شرکت فرش و سایت‌ها (۰۸:۰۰ تا ۱۶:۰۰)',
             badge: 'ساعت کاری',
             items: [
-                { id: 'w_sales', text: 'شرکت فرش: ثبت فاکتورها، سفارشات مشتریان و پیگیری فروش', days: ['sat','sun','mon','tue','wed'] },
-                { id: 'w_catalog', text: 'شرکت فرش: بروزرسانی کاتالوگ محصولات و کنترل موجودی', days: ['sat','sun','mon','tue','wed'] },
-                { id: 'w_seo_it', text: 'شرکت فرش: سئو سایت شرکت + پشتیبانی فنی و IT', days: ['sat','sun','mon','tue','wed'] },
-                { id: 'w_my_carpet', text: 'سایت فرش شخصی: بارگذاری محصول، توسعه، سئو و نماد اعتماد', days: ['sat','sun','mon','tue','wed'] },
-                { id: 'w_hotel', text: 'پروژه هتل: پیشبرد سایت هتل و ثبت در پلتفرم‌های رزرو', days: ['sat','sun','mon','tue','wed'] },
-                { id: 'w_uni_teach', text: 'حضور و تدریس در دانشگاه (۷:۳۰ صبح الی ۱۹:۳۰ عصر)', days: ['thu'] }
+                { id: 'w_sales', text: 'شرکت فرش: ثبت فاکتورها، سفارشات مشتریان و پیگیری فروش', days: ['sat','sun','mon','tue','wed'], priority: true, subtasks: [] },
+                { id: 'w_catalog', text: 'شرکت فرش: بروزرسانی کاتالوگ محصولات و کنترل موجودی', days: ['sat','sun','mon','tue','wed'], priority: false, subtasks: [] },
+                { id: 'w_seo_it', text: 'شرکت فرش: سئو سایت شرکت + پشتیبانی فنی و IT', days: ['sat','sun','mon','tue','wed'], priority: false, subtasks: [] },
+                { id: 'w_my_carpet', text: 'سایت فرش شخصی: بارگذاری محصول، توسعه، سئو و نماد اعتماد', days: ['sat','sun','mon','tue','wed'], priority: true, subtasks: ['بارگذاری ۲ محصول جدید', 'بررسی سرچ کنسول'] },
+                { id: 'w_hotel', text: 'پروژه هتل: پیشبرد سایت هتل و ثبت در پلتفرم‌های رزرو', days: ['sat','sun','mon','tue','wed'], priority: false, subtasks: [] },
+                { id: 'w_uni_teach', text: 'حضور و تدریس در دانشگاه (۷:۳۰ صبح الی ۱۹:۳۰ عصر)', days: ['thu'], priority: true, subtasks: [] }
             ]
         },
         {
@@ -703,9 +921,9 @@
             title: '۳. پژوهش دکتری و زبان (بعد از ظهر)',
             badge: 'آینده تحصیلی و مهاجرت',
             items: [
-                { id: 'a_phd_exam', text: 'مطالعه عمیق آزمون جامع دکتری (آمادگی کتبی و شفاهی)', days: ['sat','sun','mon','tue','wed','fri'] },
-                { id: 'a_isi', text: 'تحقیق و نگارش مقاله ISI (ریسرچ، متدولوژی و نگارش)', days: ['sat','sun','mon','tue','wed','fri'] },
-                { id: 'a_lang_immig', text: 'مطالعه زبان نوبت عصر (مدرک زبان و مهارت مهاجرت)', days: ['sat','sun','mon','tue','wed','fri'] }
+                { id: 'a_phd_exam', text: 'مطالعه عمیق آزمون جامع دکتری (آمادگی کتبی و شفاهی)', days: ['sat','sun','mon','tue','wed','fri'], priority: true, subtasks: [] },
+                { id: 'a_isi', text: 'تحقیق و نگارش مقاله ISI (ریسرچ، متدولوژی و نگارش)', days: ['sat','sun','mon','tue','wed','fri'], priority: true, subtasks: ['خواندن ۱ مقاله مرتبط', 'نوشتن ۱ پاراگراف'] },
+                { id: 'a_lang_immig', text: 'مطالعه زبان نوبت عصر (مدرک زبان و مهارت مهاجرت)', days: ['sat','sun','mon','tue','wed','fri'], priority: false, subtasks: [] }
             ]
         },
         {
@@ -713,19 +931,27 @@
             title: '۴. ورزش، خانواده و اوقات فراغت',
             badge: 'توازن زندگی',
             items: [
-                { id: 'l_pool', text: 'ورزش استخر (برنامه ۲ روز در هفته)', days: ['sat','sun','mon','tue','wed','fri'] },
-                { id: 'l_spouse', text: 'وقت‌گذرانی، بیرون رفتن و خلوت دونفره با همسر', days: ['sat','sun','mon','tue','wed','thu','fri'] },
-                { id: 'l_family_friends', text: 'شب‌نشینی با خانواده یا دورهمی با دوستان', days: ['sat','sun','mon','tue','wed','thu','fri'] },
-                { id: 'l_fri_lunch', text: 'صرف ناهار روز جمعه با مادر همسر', days: ['fri'] },
-                { id: 'l_book', text: 'مطالعه کتاب‌های موفقیت و توسعه فردی', days: ['sat','sun','mon','tue','wed','thu','fri'] }
+                { id: 'l_pool', text: 'ورزش استخر (برنامه ۲ روز در هفته)', days: ['sat','sun','mon','tue','wed','fri'], priority: false, subtasks: [] },
+                { id: 'l_spouse', text: 'وقت‌گذرانی، بیرون رفتن و خلوت دونفره با همسر', days: ['sat','sun','mon','tue','wed','thu','fri'], priority: true, subtasks: [] },
+                { id: 'l_family_friends', text: 'شب‌نشینی با خانواده یا دورهمی با دوستان', days: ['sat','sun','mon','tue','wed','thu','fri'], priority: false, subtasks: [] },
+                { id: 'l_fri_lunch', text: 'صرف ناهار روز جمعه با مادر همسر', days: ['fri'], priority: true, subtasks: [] },
+                { id: 'l_book', text: 'مطالعه کتاب‌های موفقیت و توسعه فردی', days: ['sat','sun','mon','tue','wed','thu','fri'], priority: false, subtasks: [] }
             ]
         }
     ];
 
     let db = JSON.parse(localStorage.getItem('yarvoTrackerDB_v1') || localStorage.getItem('lifeTrackerDB_v2')) || {
         categories: JSON.parse(JSON.stringify(defaultCategories)),
-        records: {}
+        records: {},
+        brainDump: [],
+        gamification: { xp: 0, level: 1, shields: 2 },
+        settings: { theme: 'dark', pin: '', energyMode: 'high' }
     };
+
+    // تضمین وجود فیلدهای جدید برای کاربرانی که از نسخه قبلی آپدیت می‌کنند
+    if (!db.brainDump) db.brainDump = [];
+    if (!db.gamification) db.gamification = { xp: 0, level: 1, shields: 2 };
+    if (!db.settings) db.settings = { theme: 'dark', pin: '', energyMode: 'high' };
 
     let selectedDateStr = formatDateISO(new Date());
     let currentRange = '7d';
@@ -744,32 +970,332 @@
         localStorage.setItem('yarvoTrackerDB_v1', JSON.stringify(db));
     }
 
-    function switchView(viewName, btnEl) {
-        document.querySelectorAll('.view-page').forEach(p => p.classList.remove('active'));
-        document.getElementById('view-' + viewName).classList.add('active');
-
-        document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
-        if (btnEl) btnEl.classList.add('active');
-
-        document.getElementById('fabAddBtn').style.display = (viewName === 'today') ? 'flex' : 'none';
-
-        if (viewName === 'stats') renderAnalytics();
-        if (viewName === 'reports' && !document.getElementById('reportTextOutput').value) {
-            generateFormattedReport('1d');
+    // ==================== ۴. تم روشن/تاریک و قفل امنیتی PIN ====================
+    function applyTheme() {
+        if (db.settings.theme === 'light') {
+            document.body.classList.add('light-mode');
+            document.getElementById('themeToggleBtn').innerText = '🌙';
+        } else {
+            document.body.classList.remove('light-mode');
+            document.getElementById('themeToggleBtn').innerText = '☀️';
         }
-        if (viewName === 'manage') {
-            renderManageCategories();
-            renderManageTasks();
-        }
-        document.querySelector('.views-wrapper').scrollTop = 0;
     }
 
+    function toggleTheme() {
+        db.settings.theme = (db.settings.theme === 'dark') ? 'light' : 'dark';
+        saveDatabase();
+        applyTheme();
+    }
+
+    function checkPinOnStartup() {
+        if (db.settings.pin && db.settings.pin.length === 4) {
+            document.getElementById('pinLockModal').style.display = 'flex';
+        }
+    }
+
+    function verifyPinLock() {
+        const entered = document.getElementById('pinUnlockInput').value;
+        if (entered === db.settings.pin) {
+            document.getElementById('pinLockModal').style.display = 'none';
+            document.getElementById('pinUnlockInput').value = '';
+        } else {
+            alert('رمز واردشده اشتباه است!');
+        }
+    }
+
+    function savePinLockSetting() {
+        const val = document.getElementById('pinSetupInput').value.trim();
+        if (val !== '' && val.length !== 4) return alert('رمز باید دقیقاً ۴ رقم باشد (یا برای حذف رمز، کادر را خالی بگذارید).');
+        db.settings.pin = val;
+        saveDatabase();
+        showToast(val ? '🔒 قفل ۴ رقمی فعال شد' : '🔓 قفل امنیتی غیرفعال شد');
+    }
+
+    // ==================== ۵. مدیریت سطح انرژی، XP و سپر استمرار (ADHD) ====================
+    function setEnergyMode(mode) {
+        db.settings.energyMode = mode;
+        saveDatabase();
+        document.querySelectorAll('.energy-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('eng-' + mode)?.classList.add('active');
+        renderTodayView();
+        if (mode === 'low') showToast('🔋 حالت بقا فعال شد: فقط کارهای حیاتی امروز نمایش داده می‌شوند.');
+    }
+
+    function addXP(amount) {
+        db.gamification.xp = Math.max(0, (db.gamification.xp || 0) + amount);
+        const newLevel = Math.floor(db.gamification.xp / 100) + 1;
+        if (newLevel > db.gamification.level) {
+            db.gamification.level = newLevel;
+            db.gamification.shields = (db.gamification.shields || 0) + 1;
+            launchConfetti();
+            showToast(`🎉 تبریک! به سطح ${newLevel} رسیدید و ۱ سپر محافظ هدیه گرفتید!`);
+        }
+        saveDatabase();
+        updateGamificationBar();
+    }
+
+    function updateGamificationBar() {
+        document.getElementById('xpLevelDisplay').innerText = `⭐ سطح ${db.gamification.level || 1} (${db.gamification.xp || 0} XP)`;
+        document.getElementById('shieldCountDisplay').innerText = `🛡️ ${db.gamification.shields || 0} سپر محافظ`;
+    }
+
+    function useStreakShieldPrompt() {
+        const rec = db.records[selectedDateStr] || {};
+        if (rec.shieldUsed) return showToast('🛡️ سپر محافظ برای این روز قبلاً فعال شده است.');
+        if ((db.gamification.shields || 0) <= 0) return alert('شما سپر محافظی ندارید! با کسب هر ۱۰۰ امتیاز (XP) یک سپر جدید دریافت می‌کنید.');
+
+        if (confirm('🛡️ آیا می‌خواهید برای امروز از ۱ «سپر محافظ یار‌وو» استفاده کنید تا در صورت خستگی، زنجیره استمرار (Streak) شما نشکند؟')) {
+            db.gamification.shields--;
+            if (!db.records[selectedDateStr]) db.records[selectedDateStr] = { checks: {}, note: '', focusMinutes: {} };
+            db.records[selectedDateStr].shieldUsed = true;
+            saveDatabase();
+            updateGamificationBar();
+            renderTodayView();
+            showToast('🛡️ سپر محافظ فعال شد! استمرار امروز شما محفوظ است.');
+        }
+    }
+
+    // ==================== ۶. حالت تمرکز تک‌کاره (Zen Mode) و گردونه شانس ====================
+    let zenQueue = [];
+    let zenIndex = 0;
+
+    function buildUnfinishedQueue() {
+        const items = getActiveItemsForDate(selectedDateStr);
+        const checks = db.records[selectedDateStr]?.checks || {};
+        return items.filter(i => !checks[i.id]);
+    }
+
+    function openZenFocusMode() {
+        zenQueue = buildUnfinishedQueue();
+        if (zenQueue.length === 0) {
+            launchConfetti();
+            return showToast('🎉 فوق‌العاده! تمام کارهای امروز را انجام داده‌اید!');
+        }
+        zenIndex = 0;
+        document.getElementById('zenModeBadge').innerText = '🎯 حالت تمرکز تک‌کاره (فقط همین یک کار!)';
+        renderZenCard();
+        document.getElementById('zenModal').style.display = 'flex';
+    }
+
+    function spinTaskRoulette() {
+        zenQueue = buildUnfinishedQueue();
+        if (zenQueue.length === 0) return showToast('🎉 همه کارهای امروز تمام شده است!');
+        zenIndex = Math.floor(Math.random() * zenQueue.length);
+        document.getElementById('zenModeBadge').innerText = '🎲 انتخاب تصادفی گردونه شانس برای شروع:';
+        renderZenCard();
+        document.getElementById('zenModal').style.display = 'flex';
+        playDopamineSound('done');
+    }
+
+    function renderZenCard() {
+        const item = zenQueue[zenIndex];
+        const cat = db.categories.find(c => c.id === item.catId);
+        document.getElementById('zenCatName').innerText = cat ? cat.title : '';
+        document.getElementById('zenTaskTitle').innerText = item.text;
+
+        const subBox = document.getElementById('zenSubtasksBox');
+        subBox.innerHTML = '';
+        if (item.subtasks && item.subtasks.length > 0) {
+            subBox.innerHTML = '<small style="color:var(--primary); display:block; margin-bottom:4px;">🪜 از این قدم کوچک ۲ دقیقه‌ای شروع کن:</small>';
+            item.subtasks.forEach(st => {
+                const d = document.createElement('div');
+                d.style.cssText = 'font-size:0.8rem; color:var(--muted); padding:2px 0;';
+                d.innerText = '• ' + st;
+                subBox.appendChild(d);
+            });
+        }
+    }
+
+    function completeZenTask() {
+        const item = zenQueue[zenIndex];
+        if (!db.records[selectedDateStr]) db.records[selectedDateStr] = { checks: {}, note: '', focusMinutes: {} };
+        db.records[selectedDateStr].checks[item.id] = true;
+        playDopamineSound('done');
+        launchConfetti();
+        addXP(10);
+        saveDatabase();
+        renderTodayView();
+        closeZenModal();
+        showToast('آفرین! یک قدم دیگر به جلو (+10 XP)');
+    }
+
+    function nextZenTask() {
+        if (zenQueue.length <= 1) return showToast('فقط همین یک کار باقی مانده است!');
+        zenIndex = (zenIndex + 1) % zenQueue.length;
+        renderZenCard();
+    }
+
+    function startZenTimer() {
+        const item = zenQueue[zenIndex];
+        closeZenModal();
+        openVisualTimer(item.catId);
+    }
+
+    function closeZenModal() {
+        document.getElementById('zenModal').style.display = 'none';
+    }
+
+    // ==================== ۷. تایمر بصری ضد کوری زمانی و ثبت ساعت کارکرد ====================
+    let timerInterval = null;
+    let timerTotalSec = 25 * 60;
+    let timerRemainSec = 25 * 60;
+    let timerRunning = false;
+    let activeTimerCatId = null;
+
+    function openVisualTimer(catId) {
+        activeTimerCatId = catId;
+        const cat = db.categories.find(c => c.id === catId);
+        document.getElementById('timerCatTitle').innerText = `⏱️ تایمر: ${cat ? cat.title.slice(0, 22) : ''}`;
+        setTimerPreset(25);
+        document.getElementById('timerModal').style.display = 'flex';
+    }
+
+    function setTimerPreset(minutes) {
+        if (timerInterval) clearInterval(timerInterval);
+        timerRunning = false;
+        timerTotalSec = minutes * 60;
+        timerRemainSec = timerTotalSec;
+        document.getElementById('timerStartPauseBtn').innerText = '▶️ شروع تمرکز';
+        document.getElementById('timerStatusText').innerText = `${minutes} دقیقه تمرکز عمیق`;
+        updateTimerVisual();
+    }
+
+    function toggleVisualTimer() {
+        if (timerRunning) {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            document.getElementById('timerStartPauseBtn').innerText = '▶️ ادامه تمرکز';
+            document.getElementById('timerStatusText').innerText = 'متوقف‌شده';
+        } else {
+            timerRunning = true;
+            document.getElementById('timerStartPauseBtn').innerText = '⏸️ توقف موقت';
+            document.getElementById('timerStatusText').innerText = '🔥 در حال تمرکز...';
+            timerInterval = setInterval(() => {
+                if (timerRemainSec > 0) {
+                    timerRemainSec--;
+                    updateTimerVisual();
+                } else {
+                    clearInterval(timerInterval);
+                    timerRunning = false;
+                    playDopamineSound('timer');
+                    launchConfetti();
+                    logMinutesToCategory(activeTimerCatId, Math.round(timerTotalSec / 60));
+                    closeTimerModal();
+                }
+            }, 1000);
+        }
+    }
+
+    function updateTimerVisual() {
+        const m = String(Math.floor(timerRemainSec / 60)).padStart(2, '0');
+        const s = String(timerRemainSec % 60).padStart(2, '0');
+        document.getElementById('timerDigits').innerText = `${m}:${s}`;
+        const deg = Math.round((timerRemainSec / timerTotalSec) * 360);
+        document.getElementById('timerCircleVisual').style.background = `conic-gradient(var(--primary) ${deg}deg, var(--bg) 0deg)`;
+    }
+
+    function finishAndLogTimerEarly() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerRunning = false;
+        const elapsedMin = Math.max(1, Math.round((timerTotalSec - timerRemainSec) / 60));
+        logMinutesToCategory(activeTimerCatId, elapsedMin);
+        closeTimerModal();
+    }
+
+    function logMinutesToCategory(catId, mins) {
+        if (!catId || mins <= 0) return;
+        if (!db.records[selectedDateStr]) db.records[selectedDateStr] = { checks: {}, note: '', focusMinutes: {} };
+        if (!db.records[selectedDateStr].focusMinutes) db.records[selectedDateStr].focusMinutes = {};
+        db.records[selectedDateStr].focusMinutes[catId] = (db.records[selectedDateStr].focusMinutes[catId] || 0) + mins;
+        addXP(mins);
+        saveDatabase();
+        renderTodayView();
+        showToast(`⏱️ ${mins} دقیقه کارکرد برای این بخش ثبت شد (+${mins} XP)`);
+    }
+
+    function closeTimerModal() {
+        if (timerInterval) clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timerModal').style.display = 'none';
+    }
+
+    // ==================== ۸. پارکینگ تخلیه فوری ذهن (Brain Dump + Voice) ====================
+    function addBrainDumpItem() {
+        const inp = document.getElementById('brainDumpInput');
+        const txt = inp.value.trim();
+        if (!txt) return;
+        db.brainDump.unshift({ id: 'bd_' + Date.now(), text: txt, date: getJalaliString(selectedDateStr) });
+        inp.value = '';
+        saveDatabase();
+        renderBrainDump();
+        showToast('💭 در پارکینگ ذهن ذخیره شد');
+    }
+
+    function startVoiceBrainDump() {
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SpeechRec) return alert('مرورگر/گوشی شما از تایپ صوتی پشتیبانی نمی‌کند. لطفاً از میکروفون کیبورد گوشی استفاده کنید.');
+        const rec = new SpeechRec();
+        rec.lang = 'fa-IR';
+        showToast('🎤 در حال گوش دادن... صحبت کنید');
+        rec.onresult = (e) => {
+            const transcript = e.results[0][0].transcript;
+            document.getElementById('brainDumpInput').value = transcript;
+            addBrainDumpItem();
+        };
+        rec.start();
+    }
+
+    function convertBrainDumpToTask(bdId) {
+        const item = db.brainDump.find(x => x.id === bdId);
+        if (!item) return;
+        openTaskModal();
+        document.getElementById('modalTaskText').value = item.text;
+        db.brainDump = db.brainDump.filter(x => x.id !== bdId);
+        saveDatabase();
+        renderBrainDump();
+    }
+
+    function deleteBrainDump(bdId) {
+        db.brainDump = db.brainDump.filter(x => x.id !== bdId);
+        saveDatabase();
+        renderBrainDump();
+    }
+
+    function renderBrainDump() {
+        const box = document.getElementById('brainDumpListContainer');
+        box.innerHTML = '';
+        if (db.brainDump.length === 0) {
+            box.innerHTML = '<p style="font-size:0.78rem; color:var(--muted); text-align:center; padding:14px;">پارکینگ ذهن شما خالی و آرام است ✨</p>';
+            return;
+        }
+        db.brainDump.forEach(b => {
+            const row = document.createElement('div');
+            row.className = 'manage-row';
+            row.innerHTML = `
+                <div style="flex:1;">
+                    <span>${b.text}</span>
+                    <small style="color:var(--muted); display:block;">${b.date}</small>
+                </div>
+                <div style="display:flex; gap:5px;">
+                    <button class="btn secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="convertBrainDumpToTask('${b.id}')">+ تبدیل به کار</button>
+                    <button class="nav-icon-btn" onclick="deleteBrainDump('${b.id}')">🗑️</button>
+                </div>
+            `;
+            box.appendChild(row);
+        });
+    }
+
+    // ==================== ۹. رندر صفحه اصلی (امروز) و محاسبات ====================
     function getActiveItemsForDate(isoStr) {
         const dayInfo = getDayCodeFromISO(isoStr);
+        const mode = db.settings.energyMode || 'high';
         let list = [];
         db.categories.forEach(cat => {
-            cat.items.forEach(item => {
-                if (item.days.includes(dayInfo.id)) list.push({ ...item, catId: cat.id });
+            const dayItems = cat.items.filter(i => i.days.includes(dayInfo.id));
+            dayItems.forEach((item, idx) => {
+                // در حالت باتری ضعیف، فقط کارهای اولویت‌دار یا اولین کار هر بخش می‌آید
+                if (mode === 'low' && !item.priority && idx > 0) return;
+                list.push({ ...item, catId: cat.id });
             });
         });
         return list;
@@ -777,11 +1303,18 @@
 
     function calcDateStats(isoStr) {
         const items = getActiveItemsForDate(isoStr);
+        const rec = db.records[isoStr] || {};
+        if (rec.shieldUsed) return { done: items.length, total: items.length, pct: 100 };
         if (items.length === 0) return { done: 0, total: 0, pct: 0 };
         let done = 0;
-        const checks = db.records[isoStr]?.checks || {};
+        const checks = rec.checks || {};
         items.forEach(item => { if (checks[item.id]) done++; });
         return { done, total: items.length, pct: Math.round((done / items.length) * 100) };
+    }
+
+    function calcDateFocusMinutes(isoStr) {
+        const fm = db.records[isoStr]?.focusMinutes || {};
+        return Object.values(fm).reduce((a, b) => a + Number(b || 0), 0);
     }
 
     function calcStreak() {
@@ -797,58 +1330,39 @@
         return streak;
     }
 
-    function changeDate(offset) {
-        const dt = parseSafeLocalDate(selectedDateStr);
-        dt.setDate(dt.getDate() + offset);
-        selectedDateStr = formatDateISO(dt);
-        renderTodayView();
-    }
-
-    function onDatePick(val) {
-        if (val) { selectedDateStr = val; renderTodayView(); }
-    }
-
-    function goToToday() {
-        selectedDateStr = formatDateISO(new Date());
-        renderTodayView();
-        showToast('به تاریخ امروزِ گوشی برگشتید');
-    }
-
     function renderTodayView() {
         document.getElementById('hiddenDatePicker').value = selectedDateStr;
         document.getElementById('todayJalaliTitle').innerText = getJalaliString(selectedDateStr);
         document.getElementById('todayIsoTitle').innerText = selectedDateStr;
+        document.getElementById('todayTotalMinutes').innerText = calcDateFocusMinutes(selectedDateStr) + ' دقیقه';
 
         const st = calcDateStats(selectedDateStr);
         document.getElementById('todayProgressBar').style.width = st.pct + '%';
         document.getElementById('todayDoneCount').innerText = `${st.done} از ${st.total} کار انجام شده`;
         document.getElementById('todayPctCircle').innerText = st.pct + '%';
-        document.getElementById('headerStreak').innerText = `🔥 ${calcStreak()} روز استمرار`;
+        document.getElementById('headerStreak').innerText = `🔥 ${calcStreak()} روز`;
 
-        const dayInfo = getDayCodeFromISO(selectedDateStr);
-        const notice = document.getElementById('specialDayNotice');
-        if (dayInfo.id === 'thu') {
-            notice.style.display = 'block';
-            notice.innerText = '📌 پنج‌شنبه (روز تدریس دانشگاه): ۷:۳۰ صبح تا ۷:۳۰ عصر.';
-        } else if (dayInfo.id === 'fri') {
-            notice.style.display = 'block';
-            notice.innerText = '🌿 جمعه: ناهار با مادر همسر، استراحت و مرور سبک دکتری/زبان.';
-        } else {
-            notice.style.display = 'none';
-        }
+        const isShielded = db.records[selectedDateStr]?.shieldUsed;
+        document.getElementById('shieldStatusToday').innerText = isShielded ? '🛡️ محافظت‌شده با سپر' : 'هدف: +۷۰٪';
 
         document.getElementById('dailyNoteInput').value = db.records[selectedDateStr]?.note || '';
 
         const listContainer = document.getElementById('todayCategoriesList');
         listContainer.innerHTML = '';
+        const dayInfo = getDayCodeFromISO(selectedDateStr);
         const checks = db.records[selectedDateStr]?.checks || {};
+        const subChecks = db.records[selectedDateStr]?.subChecks || {};
+        const focusMins = db.records[selectedDateStr]?.focusMinutes || {};
+        const mode = db.settings.energyMode || 'high';
 
         db.categories.forEach(cat => {
-            const activeItems = cat.items.filter(i => i.days.includes(dayInfo.id));
+            let activeItems = cat.items.filter(i => i.days.includes(dayInfo.id));
+            if (mode === 'low') activeItems = activeItems.filter((item, idx) => item.priority || idx === 0);
             if (activeItems.length === 0) return;
 
             let catDone = 0;
             activeItems.forEach(i => { if (checks[i.id]) catDone++; });
+            const catMins = focusMins[cat.id] || 0;
             const isCollapsed = !!collapsedCats[cat.id];
 
             const acc = document.createElement('div');
@@ -856,16 +1370,13 @@
 
             const header = document.createElement('div');
             header.className = 'cat-acc-header';
-            header.onclick = () => {
-                collapsedCats[cat.id] = !collapsedCats[cat.id];
-                renderTodayView();
-            };
             header.innerHTML = `
-                <div class="cat-acc-title">
+                <div class="cat-acc-title" onclick="toggleCatCollapse('${cat.id}')">
                     <span class="chevron">▼</span>
                     <span>${cat.title}</span>
                 </div>
                 <div class="cat-acc-meta">
+                    <button class="timer-pill-btn" onclick="openVisualTimer('${cat.id}')">⏱️ ${catMins}m</button>
                     <span class="cat-mini-badge">${catDone}/${activeItems.length}</span>
                 </div>
             `;
@@ -876,6 +1387,9 @@
 
             activeItems.forEach(item => {
                 const isChecked = !!checks[item.id];
+                const wrap = document.createElement('div');
+                wrap.className = 'task-wrapper';
+
                 const row = document.createElement('div');
                 row.className = `task-row ${isChecked ? 'done' : ''}`;
                 row.innerHTML = `
@@ -883,15 +1397,51 @@
                         <input type="checkbox" ${isChecked ? 'checked' : ''}>
                         <span>${item.text}</span>
                     </label>
-                    <button class="icon-btn" onclick="openTaskModal('${cat.id}','${item.id}')">✏️</button>
+                    ${item.priority ? '<span class="priority-badge">🔥 فوری</span>' : ''}
+                    <button class="nav-icon-btn" style="width:26px; height:26px;" onclick="openTaskModal('${cat.id}','${item.id}')">✏️</button>
                 `;
                 row.querySelector('input').onchange = (e) => {
-                    if (!db.records[selectedDateStr]) db.records[selectedDateStr] = { checks: {}, note: '' };
+                    if (!db.records[selectedDateStr]) db.records[selectedDateStr] = { checks: {}, subChecks: {}, note: '', focusMinutes: {} };
                     db.records[selectedDateStr].checks[item.id] = e.target.checked;
+                    if (e.target.checked) {
+                        playDopamineSound('done');
+                        addXP(10);
+                        if (calcDateStats(selectedDateStr).pct === 100) launchConfetti();
+                    } else {
+                        addXP(-10);
+                    }
                     saveDatabase();
                     renderTodayView();
                 };
-                body.appendChild(row);
+                wrap.appendChild(row);
+
+                // رندر ریزقدم‌ها (Micro-Steps)
+                if (item.subtasks && item.subtasks.length > 0) {
+                    const subBox = document.createElement('div');
+                    subBox.className = 'subtasks-box';
+                    item.subtasks.forEach((stText, sIdx) => {
+                        const subKey = `${item.id}_${sIdx}`;
+                        const isSubDone = !!subChecks[subKey];
+                        const sRow = document.createElement('label');
+                        sRow.className = `subtask-item ${isSubDone ? 'done' : ''}`;
+                        sRow.innerHTML = `
+                            <input type="checkbox" ${isSubDone ? 'checked' : ''}>
+                            <span>🪜 ${stText}</span>
+                        `;
+                        sRow.querySelector('input').onchange = (ev) => {
+                            if (!db.records[selectedDateStr]) db.records[selectedDateStr] = { checks: {}, subChecks: {}, note: '', focusMinutes: {} };
+                            if (!db.records[selectedDateStr].subChecks) db.records[selectedDateStr].subChecks = {};
+                            db.records[selectedDateStr].subChecks[subKey] = ev.target.checked;
+                            if (ev.target.checked) { playDopamineSound('done'); addXP(3); }
+                            saveDatabase();
+                            renderTodayView();
+                        };
+                        subBox.appendChild(sRow);
+                    });
+                    wrap.appendChild(subBox);
+                }
+
+                body.appendChild(wrap);
             });
 
             acc.appendChild(body);
@@ -899,13 +1449,42 @@
         });
     }
 
+    function toggleCatCollapse(catId) {
+        collapsedCats[catId] = !collapsedCats[catId];
+        renderTodayView();
+    }
+
+    function changeDate(offset) {
+        const dt = parseSafeLocalDate(selectedDateStr);
+        dt.setDate(dt.getDate() + offset);
+        selectedDateStr = formatDateISO(dt);
+        renderTodayView();
+    }
+
+    function onDatePick(val) { if (val) { selectedDateStr = val; renderTodayView(); } }
+    function goToToday() { selectedDateStr = formatDateISO(new Date()); renderTodayView(); showToast('به امروز برگشتید'); }
+
     function saveDailyNote(val) {
-        if (!db.records[selectedDateStr]) db.records[selectedDateStr] = { checks: {}, note: '' };
+        if (!db.records[selectedDateStr]) db.records[selectedDateStr] = { checks: {}, note: '', focusMinutes: {} };
         db.records[selectedDateStr].note = val;
         saveDatabase();
     }
 
-    // ==================== صفحه ۲: آمار و نمودار ====================
+    function switchView(viewName, btnEl) {
+        document.querySelectorAll('.view-page').forEach(p => p.classList.remove('active'));
+        document.getElementById('view-' + viewName).classList.add('active');
+        document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+        if (btnEl) btnEl.classList.add('active');
+        document.getElementById('fabAddBtn').style.display = (viewName === 'today') ? 'flex' : 'none';
+
+        if (viewName === 'brain') renderBrainDump();
+        if (viewName === 'stats') renderAnalytics();
+        if (viewName === 'reports' && !document.getElementById('reportTextOutput').value) generateFormattedReport('1d');
+        if (viewName === 'manage') { renderManageCategories(); renderManageTasks(); }
+        document.querySelector('.views-wrapper').scrollTop = 0;
+    }
+
+    // ==================== ۱۰. آمار و گزارش‌ساز ۵ سطحی (همراه با ساعت کارکرد) ====================
     function getDatesForRange(rangeType) {
         const refDate = parseSafeLocalDate(selectedDateStr);
         let list = [];
@@ -913,17 +1492,15 @@
         else if (rangeType === '7d' || rangeType === '30d') {
             const count = rangeType === '7d' ? 7 : 30;
             for (let i = count - 1; i >= 0; i--) {
-                const dt = new Date(refDate);
-                dt.setDate(dt.getDate() - i);
+                const dt = new Date(refDate); dt.setDate(dt.getDate() - i);
                 list.push(formatDateISO(dt));
             }
         } else if (rangeType === '365d') {
             for (let i = 364; i >= 0; i--) {
-                const dt = new Date(refDate);
-                dt.setDate(dt.getDate() - i);
+                const dt = new Date(refDate); dt.setDate(dt.getDate() - i);
                 list.push(formatDateISO(dt));
             }
-        } else if (rangeType === 'all') {
+        } else {
             const allKeys = Object.keys(db.records).sort();
             list = allKeys.length > 0 ? allKeys : [selectedDateStr];
         }
@@ -940,84 +1517,38 @@
     function renderAnalytics() {
         const chart = document.getElementById('statsChartBars');
         const breakdown = document.getElementById('statsCategoryBreakdown');
-        chart.innerHTML = '';
-        breakdown.innerHTML = '';
+        chart.innerHTML = ''; breakdown.innerHTML = '';
 
-        const refDate = parseSafeLocalDate(selectedDateStr);
         const dateList = getDatesForRange(currentRange);
         let barGroups = [];
+        let sumPct = 0, activeDays = 0, goldenDays = 0, totalMins = 0;
+
+        dateList.forEach(iso => {
+            totalMins += calcDateFocusMinutes(iso);
+            if (db.records[iso] || currentRange === '1d') {
+                const st = calcDateStats(iso);
+                if (st.done > 0 || db.records[iso]?.note || currentRange === '1d') {
+                    activeDays++; sumPct += st.pct;
+                    if (st.pct >= 70) goldenDays++;
+                }
+            }
+        });
 
         document.getElementById('statAvgLabel').innerText = `میانگین (${rangeTitles[currentRange]})`;
-
-        if (currentRange === '1d') {
-            const dayInfo = getDayCodeFromISO(selectedDateStr);
-            const checks = db.records[selectedDateStr]?.checks || {};
-            db.categories.forEach(cat => {
-                const active = cat.items.filter(i => i.days.includes(dayInfo.id));
-                let done = 0;
-                active.forEach(i => { if (checks[i.id]) done++; });
-                const pct = active.length ? Math.round((done / active.length) * 100) : 0;
-                barGroups.push({ label: cat.title.slice(0, 10), pct });
-            });
-        } else if (currentRange === '7d' || currentRange === '30d') {
-            dateList.forEach(iso => {
-                const stats = calcDateStats(iso);
-                const shortLabel = currentRange === '7d' ? getDayCodeFromISO(iso).name : iso.slice(8);
-                barGroups.push({ label: shortLabel, pct: stats.pct });
-            });
-        } else if (currentRange === '365d') {
-            for (let i = 11; i >= 0; i--) {
-                const dt = new Date(refDate.getFullYear(), refDate.getMonth() - i, 1, 12, 0, 0);
-                const ym = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}`;
-                let mTotal = 0, mDays = 0;
-                Object.keys(db.records).forEach(iso => {
-                    if (iso.startsWith(ym)) {
-                        const st = calcDateStats(iso);
-                        if (st.done > 0 || db.records[iso]?.note) { mTotal += st.pct; mDays++; }
-                    }
-                });
-                barGroups.push({ label: ym.slice(5), pct: mDays ? Math.round(mTotal / mDays) : 0 });
-            }
-        } else {
-            const yearsMap = {};
-            dateList.forEach(iso => {
-                const st = calcDateStats(iso);
-                if (st.done > 0 || db.records[iso]?.note) {
-                    const yr = iso.slice(0, 4);
-                    if (!yearsMap[yr]) yearsMap[yr] = [];
-                    yearsMap[yr].push(st.pct);
-                }
-            });
-            Object.keys(yearsMap).sort().forEach(yr => {
-                const arr = yearsMap[yr];
-                barGroups.push({ label: yr, pct: Math.round(arr.reduce((a, b) => a + b, 0) / arr.length) });
-            });
-            if (barGroups.length === 0) barGroups.push({ label: '-', pct: 0 });
-        }
-
-        let sumPct = 0, activeDays = 0, goldenDays = 0;
-        if (currentRange === '1d') {
-            const st = calcDateStats(selectedDateStr);
-            activeDays = st.done > 0 ? 1 : 0;
-            goldenDays = st.pct >= 70 ? 1 : 0;
-            document.getElementById('statAvgVal').innerText = st.pct + '%';
-        } else {
-            dateList.forEach(iso => {
-                if (db.records[iso]) {
-                    const st = calcDateStats(iso);
-                    if (st.done > 0 || db.records[iso]?.note) {
-                        activeDays++;
-                        sumPct += st.pct;
-                        if (st.pct >= 70) goldenDays++;
-                    }
-                }
-            });
-            document.getElementById('statAvgVal').innerText = (activeDays ? Math.round(sumPct / activeDays) : 0) + '%';
-        }
-
-        document.getElementById('statActiveDays').innerText = activeDays + ' روز';
+        document.getElementById('statAvgVal').innerText = (activeDays ? Math.round(sumPct / activeDays) : 0) + '%';
+        document.getElementById('statTotalHours').innerText = (totalMins / 60).toFixed(1) + ' ساعت';
         document.getElementById('statGoldenDays').innerText = goldenDays + ' روز';
         document.getElementById('statStreak').innerText = calcStreak() + ' روز';
+
+        if (currentRange === '7d' || currentRange === '30d' || currentRange === '1d') {
+            dateList.forEach(iso => {
+                const st = calcDateStats(iso);
+                const lbl = currentRange === '7d' ? getDayCodeFromISO(iso).name : iso.slice(8);
+                barGroups.push({ label: lbl, pct: st.pct });
+            });
+        } else {
+            barGroups.push({ label: rangeTitles[currentRange], pct: activeDays ? Math.round(sumPct / activeDays) : 0 });
+        }
 
         barGroups.forEach(g => {
             const col = document.createElement('div');
@@ -1031,12 +1562,12 @@
         });
 
         db.categories.forEach(cat => {
-            let catDone = 0, catTotal = 0;
+            let catDone = 0, catTotal = 0, catMins = 0;
             dateList.forEach(iso => {
+                catMins += (db.records[iso]?.focusMinutes?.[cat.id] || 0);
                 if (currentRange !== '1d' && !db.records[iso]) return;
                 const dayInfo = getDayCodeFromISO(iso);
-                const activeItems = cat.items.filter(i => i.days.includes(dayInfo.id));
-                activeItems.forEach(item => {
+                cat.items.filter(i => i.days.includes(dayInfo.id)).forEach(item => {
                     catTotal++;
                     if (db.records[iso]?.checks?.[item.id]) catDone++;
                 });
@@ -1045,11 +1576,11 @@
             const row = document.createElement('div');
             row.style.marginBottom = '10px';
             row.innerHTML = `
-                <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:4px;">
+                <div style="display:flex; justify-content:space-between; font-size:0.78rem; margin-bottom:4px;">
                     <span>${cat.title}</span>
-                    <strong style="color:var(--primary);">${catPct}%</strong>
+                    <span><strong style="color:var(--accent);">⏱️ ${catMins} دقیقه</strong> | <strong style="color:var(--primary);">${catPct}%</strong></span>
                 </div>
-                <div class="progress-bar-bg" style="height:7px;">
+                <div class="progress-bar-bg" style="height:6px;">
                     <div class="progress-bar-fill" style="width:${catPct}%"></div>
                 </div>
             `;
@@ -1057,7 +1588,6 @@
         });
     }
 
-    // ==================== صفحه ۳: گزارش‌ساز رسمی و اکسل ====================
     function generateFormattedReport(rangeType) {
         const title = rangeTitles[rangeType];
         const dateList = getDatesForRange(rangeType);
@@ -1067,47 +1597,42 @@
 
         if (rangeType === '1d') {
             const st = calcDateStats(selectedDateStr);
+            const mins = calcDateFocusMinutes(selectedDateStr);
             const dayInfo = getDayCodeFromISO(selectedDateStr);
             const checks = db.records[selectedDateStr]?.checks || {};
+            const focusMins = db.records[selectedDateStr]?.focusMinutes || {};
             text += `📅 تاریخ: ${getJalaliString(selectedDateStr)}\n`;
-            text += `📈 پیشرفت کل روز: ${st.pct}% (${st.done} از ${st.total} کار)\n`;
+            text += `📈 پیشرفت: ${st.pct}% (${st.done}/${st.total}) | ⏱️ زمان متمرکز: ${mins} دقیقه\n`;
 
             db.categories.forEach(cat => {
                 const activeItems = cat.items.filter(i => i.days.includes(dayInfo.id));
                 if (activeItems.length === 0) return;
-                text += `\n🔹 ${cat.title}:\n`;
+                text += `\n🔹 ${cat.title} (⏱️ ${focusMins[cat.id] || 0} دقیقه):\n`;
                 activeItems.forEach(item => {
                     text += `  ${checks[item.id] ? '✅' : '⬜'} ${item.text}\n`;
                 });
             });
-            if (db.records[selectedDateStr]?.note) {
-                text += `\n📝 یادداشت روز:\n${db.records[selectedDateStr].note}\n`;
-            }
+            if (db.records[selectedDateStr]?.note) text += `\n📝 یادداشت:\n${db.records[selectedDateStr].note}\n`;
         } else {
-            const firstDate = dateList[0];
-            const lastDate = dateList[dateList.length - 1];
-            let activeDays = 0, sumPct = 0, goldenDays = 0, totalTasksDone = 0;
-
+            let activeDays = 0, sumPct = 0, goldenDays = 0, totalMins = 0;
             dateList.forEach(iso => {
+                totalMins += calcDateFocusMinutes(iso);
                 if (db.records[iso]) {
                     const st = calcDateStats(iso);
                     if (st.done > 0 || db.records[iso]?.note) {
-                        activeDays++;
-                        sumPct += st.pct;
-                        totalTasksDone += st.done;
+                        activeDays++; sumPct += st.pct;
                         if (st.pct >= 70) goldenDays++;
                     }
                 }
             });
             const avgPct = activeDays ? Math.round(sumPct / activeDays) : 0;
-            text += `📅 از ${getJalaliString(firstDate)} تا ${getJalaliString(lastDate)}\n`;
-            text += `📈 میانگین پیشرفت: ${avgPct}% | روزهای فعال: ${activeDays} | روزهای طلایی: ${goldenDays}\n`;
-            text += `✔️ مجموع کارهای انجام‌شده: ${totalTasksDone} مورد\n\n`;
+            text += `📅 از ${getJalaliString(dateList[0])} تا ${getJalaliString(dateList[dateList.length - 1])}\n`;
+            text += `📈 میانگین: ${avgPct}% | روزهای فعال: ${activeDays} | ⏱️ کل زمان تمرکز: ${(totalMins/60).toFixed(1)} ساعت\n\n`;
             text += `📌 عملکرد تفکیکی بخش‌ها:\n`;
-
             db.categories.forEach(cat => {
-                let catDone = 0, catTotal = 0;
+                let catDone = 0, catTotal = 0, cMins = 0;
                 dateList.forEach(iso => {
+                    cMins += (db.records[iso]?.focusMinutes?.[cat.id] || 0);
                     if (!db.records[iso]) return;
                     const dayInfo = getDayCodeFromISO(iso);
                     cat.items.filter(i => i.days.includes(dayInfo.id)).forEach(item => {
@@ -1116,11 +1641,47 @@
                     });
                 });
                 const catPct = catTotal ? Math.round((catDone / catTotal) * 100) : 0;
-                text += `  🔸 ${cat.title}: ${catPct}% (${catDone}/${catTotal})\n`;
+                text += `  🔸 ${cat.title}: ${catPct}% | ⏱️ ${cMins} دقیقه\n`;
             });
         }
         document.getElementById('reportTextOutput').value = text;
-        showToast(`${title} تولید شد`);
+        showToast(`${title} آماده شد`);
+    }
+
+    // ==================== ۱۱. پل ارتباطی بومی اندروید و مدیریت کارها ====================
+    async function copyTextUniversal(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try { await navigator.clipboard.writeText(text); return true; } catch (e) {}
+        }
+        const temp = document.createElement('textarea');
+        temp.value = text; document.body.appendChild(temp);
+        temp.select(); document.execCommand('copy'); document.body.removeChild(temp);
+        return true;
+    }
+
+    async function nativeShareText(title, text) {
+        if (window.Capacitor?.Plugins?.Share) {
+            try { await window.Capacitor.Plugins.Share.share({ title, text, dialogTitle: 'اشتراک‌گذاری گزارش یار‌وو' }); return; } catch (e) {}
+        }
+        if (navigator.share) { try { await navigator.share({ title, text }); return; } catch (e) {} }
+        await copyTextUniversal(text);
+        showToast('متن در کلیپ‌بورد کپی شد!');
+    }
+
+    async function nativeExportAndShareFile(fileName, contentString, mimeType) {
+        if (window.Capacitor?.Plugins?.Filesystem && window.Capacitor?.Plugins?.Share) {
+            try {
+                const writeRes = await window.Capacitor.Plugins.Filesystem.writeFile({
+                    path: fileName, data: contentString, directory: 'CACHE', encoding: 'utf8'
+                });
+                await window.Capacitor.Plugins.Share.share({ title: fileName, url: writeRes.uri, dialogTitle: 'ذخیره یا ارسال فایل' });
+                return;
+            } catch (err) {}
+        }
+        const blob = new Blob([contentString], { type: mimeType });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob); a.download = fileName; a.click();
+        showToast(`فایل ${fileName} آماده شد`);
     }
 
     async function copyReportBox() {
@@ -1137,29 +1698,25 @@
     }
 
     async function exportCSV() {
-        // اگر هنوز روزی تیک نخورده، حداقل وضعیت امروز را در فایل اکسل قرار می‌دهد
         const allDates = Object.keys(db.records).length > 0 ? Object.keys(db.records).sort() : [selectedDateStr];
-        let csv = '\uFEFFتاریخ میلادی,تاریخ شمسی,روز هفته,درصد پیشرفت,انجام شده,کل کارها,یادداشت\n';
-
+        let csv = '\uFEFFتاریخ میلادی,تاریخ شمسی,روز هفته,درصد پیشرفت,دقیقه تمرکز,انجام شده,کل کارها,یادداشت\n';
         allDates.forEach(dateStr => {
-            const stats = calcDateStats(dateStr);
+            const st = calcDateStats(dateStr);
+            const mins = calcDateFocusMinutes(dateStr);
             const jalali = getJalaliString(dateStr).replace(/,/g, ' ');
             const dayName = getDayCodeFromISO(dateStr).name;
             const note = (db.records[dateStr]?.note || '').replace(/\n/g, ' | ').replace(/,/g, '،');
-            csv += `${dateStr},${jalali},${dayName},${stats.pct}%,${stats.done},${stats.total},"${note}"\n`;
+            csv += `${dateStr},${jalali},${dayName},${st.pct}%,${mins},${st.done},${st.total},"${note}"\n`;
         });
-
         await nativeExportAndShareFile(`Yarvo_History_${selectedDateStr}.csv`, csv, 'text/csv;charset=utf-8;');
     }
 
-    // ==================== صفحه ۴: مدیریت و پشتیبان‌گیری ====================
     function openTaskModal(catId = null, itemId = null) {
         const select = document.getElementById('modalTaskCat');
         select.innerHTML = '';
         db.categories.forEach(c => {
             const opt = document.createElement('option');
-            opt.value = c.id;
-            opt.innerText = c.title;
+            opt.value = c.id; opt.innerText = c.title;
             select.appendChild(opt);
         });
 
@@ -1169,12 +1726,16 @@
             document.getElementById('modalTaskTitle').innerText = 'ویرایش کار';
             document.getElementById('modalEditItemId').value = item.id;
             document.getElementById('modalTaskText').value = item.text;
+            document.getElementById('modalTaskPriority').checked = !!item.priority;
+            document.getElementById('modalTaskSubtasks').value = (item.subtasks || []).join('\n');
             select.value = catId;
             modalSelectedDays = [...item.days];
         } else {
             document.getElementById('modalTaskTitle').innerText = 'افزودن کار جدید';
             document.getElementById('modalEditItemId').value = '';
             document.getElementById('modalTaskText').value = '';
+            document.getElementById('modalTaskPriority').checked = false;
+            document.getElementById('modalTaskSubtasks').value = '';
             if (catId) select.value = catId;
             modalSelectedDays = ['sat','sun','mon','tue','wed','thu','fri'];
         }
@@ -1182,9 +1743,7 @@
         document.getElementById('taskModal').style.display = 'flex';
     }
 
-    function closeTaskModal() {
-        document.getElementById('taskModal').style.display = 'none';
-    }
+    function closeTaskModal() { document.getElementById('taskModal').style.display = 'none'; }
 
     function renderModalDaysChips() {
         const box = document.getElementById('modalDaysChips');
@@ -1192,52 +1751,44 @@
         ['sat','sun','mon','tue','wed','thu','fri'].forEach(dId => {
             const dName = weekDaysMap.find(w => w.id === dId).name;
             const chip = document.createElement('div');
-            const isSel = modalSelectedDays.includes(dId);
-            chip.className = `day-chip ${isSel ? 'selected' : ''}`;
+            chip.className = `day-chip ${modalSelectedDays.includes(dId) ? 'selected' : ''}`;
             chip.innerText = dName;
             chip.onclick = () => {
-                if (modalSelectedDays.includes(dId)) {
-                    modalSelectedDays = modalSelectedDays.filter(x => x !== dId);
-                } else {
-                    modalSelectedDays.push(dId);
-                }
+                if (modalSelectedDays.includes(dId)) modalSelectedDays = modalSelectedDays.filter(x => x !== dId);
+                else modalSelectedDays.push(dId);
                 renderModalDaysChips();
             };
             box.appendChild(chip);
         });
     }
 
-    function setModalPresetDays(arr) {
-        modalSelectedDays = [...arr];
-        renderModalDaysChips();
-    }
+    function setModalPresetDays(arr) { modalSelectedDays = [...arr]; renderModalDaysChips(); }
 
     function saveModalTask() {
         const text = document.getElementById('modalTaskText').value.trim();
         const catId = document.getElementById('modalTaskCat').value;
         const editId = document.getElementById('modalEditItemId').value;
+        const priority = document.getElementById('modalTaskPriority').checked;
+        const subtasks = document.getElementById('modalTaskSubtasks').value.split('\n').map(s => s.trim()).filter(Boolean);
 
         if (!text || modalSelectedDays.length === 0) return alert('عنوان کار و حداقل یک روز را انتخاب کنید.');
 
-        if (editId) {
-            db.categories.forEach(c => c.items = c.items.filter(i => i.id !== editId));
-            db.categories.find(c => c.id === catId).items.push({ id: editId, text, days: [...modalSelectedDays] });
-        } else {
-            db.categories.find(c => c.id === catId).items.push({ id: 'h_' + Date.now(), text, days: [...modalSelectedDays] });
-        }
+        const taskObj = { id: editId || ('h_' + Date.now()), text, days: [...modalSelectedDays], priority, subtasks };
+        if (editId) db.categories.forEach(c => c.items = c.items.filter(i => i.id !== editId));
+        db.categories.find(c => c.id === catId).items.push(taskObj);
 
         saveDatabase();
         closeTaskModal();
         renderTodayView();
         renderManageTasks();
-        showToast('کار با موفقیت ذخیره شد');
+        showToast('کار ذخیره شد');
     }
 
     function saveCategory() {
         const title = document.getElementById('catTitleInput').value.trim();
         const badge = document.getElementById('catBadgeInput').value.trim();
         const editId = document.getElementById('editCatId').value;
-        if (!title) return alert('لطفاً نام بخش را وارد کنید.');
+        if (!title) return alert('نام بخش را وارد کنید.');
 
         if (editId) {
             const cat = db.categories.find(c => c.id === editId);
@@ -1252,7 +1803,6 @@
         saveDatabase();
         renderManageCategories();
         renderTodayView();
-        showToast('بخش ذخیره شد');
     }
 
     function editCategoryStart(catId) {
@@ -1262,7 +1812,6 @@
         document.getElementById('catBadgeInput').value = cat.badge || '';
         document.getElementById('editCatId').value = cat.id;
         document.getElementById('saveCatBtn').innerText = '✔ ثبت ویرایش';
-        document.querySelector('.views-wrapper').scrollTop = 0;
     }
 
     function moveCategory(idx, dir) {
@@ -1278,11 +1827,10 @@
 
     function deleteCategory(catId) {
         if (db.categories.length <= 1) return alert('حداقل یک بخش باید باقی بماند.');
-        if (!confirm('این بخش و کارهای داخل آن حذف شود؟')) return;
+        if (!confirm('این بخش حذف شود؟')) return;
         db.categories = db.categories.filter(c => c.id !== catId);
         saveDatabase();
         renderManageCategories();
-        renderManageTasks();
         renderTodayView();
     }
 
@@ -1295,7 +1843,7 @@
             div.innerHTML = `
                 <div>
                     <strong style="color:var(--primary);">${cat.title}</strong>
-                    <small style="color:var(--muted); display:block;">${cat.items.length} کار تعریف‌شده</small>
+                    <small style="color:var(--muted); display:block;">${cat.items.length} کار</small>
                 </div>
                 <div style="display:flex; gap:4px;">
                     <button class="nav-icon-btn" onclick="moveCategory(${idx}, -1)">⬆️</button>
@@ -1309,7 +1857,7 @@
     }
 
     function deleteTaskItem(catId, itemId) {
-        if (!confirm('این کار حذف شود؟')) return;
+        if (!confirm('حذف شود؟')) return;
         const cat = db.categories.find(c => c.id === catId);
         cat.items = cat.items.filter(i => i.id !== itemId);
         saveDatabase();
@@ -1327,7 +1875,7 @@
                 div.innerHTML = `
                     <div style="flex:1;">
                         <small style="color:var(--primary); display:block;">${cat.title}</small>
-                        <span>${item.text}</span>
+                        <span>${item.text} ${item.priority ? '🔥' : ''}</span>
                     </div>
                     <div style="display:flex; gap:4px;">
                         <button class="nav-icon-btn" onclick="openTaskModal('${cat.id}','${item.id}')">✏️</button>
@@ -1339,10 +1887,8 @@
         });
     }
 
-    // پشتیبان‌گیری فایلی و متنی
     async function downloadBackupJSON() {
-        const jsonText = JSON.stringify(db, null, 2);
-        await nativeExportAndShareFile(`Yarvo_Backup_${selectedDateStr}.json`, jsonText, 'application/json');
+        await nativeExportAndShareFile(`Yarvo_Backup_${selectedDateStr}.json`, JSON.stringify(db, null, 2), 'application/json');
     }
 
     function importBackupJSON(event) {
@@ -1353,59 +1899,43 @@
             try {
                 const imported = JSON.parse(e.target.result);
                 if (imported.categories && imported.records) {
-                    db = imported;
-                    saveDatabase();
-                    renderTodayView();
-                    renderManageCategories();
-                    renderManageTasks();
-                    showToast('اطلاعات با موفقیت بازیابی شد!');
-                } else {
-                    alert('فرمت فایل پشتیبان نامعتبر است.');
+                    db = imported; saveDatabase(); renderTodayView();
+                    showToast('اطلاعات بازیابی شد!');
                 }
-            } catch (err) { alert('فایل انتخاب‌شده معتبر نیست.'); }
+            } catch (err) { alert('فایل نامعتبر است.'); }
         };
         reader.readAsText(file);
     }
 
     async function exportBackupToText() {
-        const jsonText = JSON.stringify(db);
-        document.getElementById('backupCodeBox').value = jsonText;
-        await copyTextUniversal(jsonText);
-        showToast('کد پشتیبان تولید و در کلیپ‌بورد کپی شد!');
+        const str = JSON.stringify(db);
+        document.getElementById('backupCodeBox').value = str;
+        await copyTextUniversal(str);
+        showToast('کد پشتیبان کپی شد!');
     }
 
     function importBackupFromText() {
-        const raw = document.getElementById('backupCodeBox').value.trim();
-        if (!raw) return alert('لطفاً ابتدا کد پشتیبان را در کادر بالا قرار دهید (Paste کنید).');
         try {
-            const imported = JSON.parse(raw);
+            const imported = JSON.parse(document.getElementById('backupCodeBox').value.trim());
             if (imported.categories && imported.records) {
-                db = imported;
-                saveDatabase();
-                renderTodayView();
-                renderManageCategories();
-                renderManageTasks();
-                showToast('اطلاعات از روی کد متنی با موفقیت بازیابی شد!');
-            } else {
-                alert('ساختار کد واردشده نامعتبر است.');
+                db = imported; saveDatabase(); renderTodayView();
+                showToast('بازیابی انجام شد!');
             }
-        } catch (e) {
-            alert('کد واردشده ناقص یا نامعتبر است.');
-        }
+        } catch (e) { alert('کد نامعتبر است.'); }
     }
 
     function resetToDefaultAll() {
-        if (confirm('آیا ساختار بخش‌ها و کارها به حالت ۴ بخشی پیش‌فرض برگردد؟')) {
+        if (confirm('آیا بخش‌ها به پیش‌فرض برگردد؟')) {
             db.categories = JSON.parse(JSON.stringify(defaultCategories));
-            saveDatabase();
-            renderTodayView();
-            renderManageCategories();
-            renderManageTasks();
-            showToast('به تنظیمات پیش‌فرض بازگردانی شد');
+            saveDatabase(); renderTodayView(); renderManageCategories(); renderManageTasks();
         }
     }
 
-    renderTodayView();
+    // راه‌اندازی اولیه
+    applyTheme();
+    checkPinOnStartup();
+    updateGamificationBar();
+    setEnergyMode(db.settings.energyMode || 'high');
 </script>
 
 </body>
