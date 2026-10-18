@@ -39,66 +39,46 @@
             overflow: hidden;
         }
 
-        /* ========== ۱. هدر جمع‌وجور بالای اپ (App Bar) ========== */
+        /* ========== ۱. هدر بالای اپ با ساعت زنده موبایل ========== */
         .app-bar {
-            background: rgba(30, 41, 59, 0.85);
+            background: rgba(30, 41, 59, 0.92);
             backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            padding: 12px 16px;
+            padding: 10px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 20;
             flex-shrink: 0;
         }
-        .brand-area {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .brand-area { display: flex; align-items: center; gap: 10px; }
         .brand-logo-circle {
-            width: 38px;
-            height: 38px;
-            border-radius: 12px;
+            width: 36px; height: 36px; border-radius: 10px;
             background: linear-gradient(135deg, var(--primary), var(--accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1.2rem;
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 1.1rem; color: #fff;
         }
-        .brand-texts h1 {
-            font-size: 1.05rem;
-            color: var(--text);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .brand-texts h1 span {
-            font-size: 0.78rem;
-            color: var(--primary);
-            font-weight: normal;
-        }
-        .brand-texts p {
-            font-size: 0.7rem;
-            color: var(--muted);
-        }
+        .brand-texts h1 { font-size: 1rem; color: var(--text); display: flex; align-items: center; gap: 6px; }
+        .brand-texts h1 span { font-size: 0.75rem; color: var(--primary); font-weight: normal; }
+        .brand-texts p { font-size: 0.68rem; color: var(--muted); }
+        
+        .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; }
         .streak-pill {
             background: rgba(16, 185, 129, 0.15);
             border: 1px solid rgba(16, 185, 129, 0.3);
             color: #34d399;
-            padding: 5px 10px;
+            padding: 3px 9px;
             border-radius: 20px;
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 4px;
+        }
+        .live-clock {
+            font-size: 0.68rem;
+            color: var(--muted);
+            direction: ltr;
         }
 
-        /* ========== ۲. فضای محتوای صفحات (View Container) ========== */
+        /* ========== ۲. فضای محتوای صفحات ========== */
         .views-wrapper {
             flex: 1;
             overflow-y: auto;
@@ -107,19 +87,14 @@
             width: 100%;
             margin: 0 auto;
         }
-        .view-page {
-            display: none;
-            animation: fadeIn 0.22s ease-out;
-        }
-        .view-page.active {
-            display: block;
-        }
+        .view-page { display: none; animation: fadeIn 0.2s ease-out; }
+        .view-page.active { display: block; }
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
+            from { opacity: 0; transform: translateY(5px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* ========== ۳. کارت خلاصه وضعیت امروز (Hero Card) ========== */
+        /* ========== ۳. کارت وضعیت امروز ========== */
         .date-hero-card {
             background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             border: 1px solid var(--border);
@@ -149,40 +124,16 @@
             align-items: center;
             justify-content: center;
         }
-        .date-center-box {
-            text-align: center;
-            cursor: pointer;
-        }
-        .date-center-box .jalali-main {
-            font-size: 0.92rem;
-            font-weight: bold;
-            color: var(--primary);
-        }
-        .date-center-box .iso-sub {
-            font-size: 0.7rem;
-            color: var(--muted);
-        }
+        .date-center-box { text-align: center; cursor: pointer; position: relative; }
+        .date-center-box .jalali-main { font-size: 0.92rem; font-weight: bold; color: var(--primary); }
+        .date-center-box .iso-sub { font-size: 0.7rem; color: var(--muted); }
 
-        .hero-progress-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 14px;
-        }
-        .progress-info {
-            flex: 1;
-        }
-        .progress-info h3 {
-            font-size: 0.88rem;
-            margin-bottom: 6px;
-            color: #e2e8f0;
-        }
+        .hero-progress-row { display: flex; align-items: center; justify-content: space-between; gap: 14px; }
+        .progress-info { flex: 1; }
+        .progress-info h3 { font-size: 0.86rem; color: #e2e8f0; }
         .progress-bar-bg {
-            height: 10px;
-            background: #0b1120;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid var(--border);
+            height: 10px; background: #0b1120; border-radius: 10px;
+            overflow: hidden; border: 1px solid var(--border);
         }
         .progress-bar-fill {
             height: 100%;
@@ -190,29 +141,16 @@
             width: 0%;
             transition: width 0.35s ease;
         }
-        .progress-numbers {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.74rem;
-            color: var(--muted);
-            margin-top: 6px;
-        }
+        .progress-numbers { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); margin-top: 6px; }
         .pct-circle {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
+            width: 54px; height: 54px; border-radius: 50%;
             background: rgba(56, 189, 248, 0.1);
             border: 2px solid var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 1rem;
-            color: var(--primary);
-            flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 0.95rem; color: var(--primary); flex-shrink: 0;
         }
 
-        /* ========== ۴. آکاردئون دسته‌بندی کارها در صفحه اصلی ========== */
+        /* ========== ۴. آکاردئون دسته‌بندی‌ها ========== */
         .cat-accordion {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -226,76 +164,25 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            background: rgba(255, 255, 255, 0.01);
         }
-        .cat-acc-title {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.88rem;
-            font-weight: bold;
-        }
-        .cat-acc-meta {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .cat-mini-badge {
-            font-size: 0.72rem;
-            padding: 2px 8px;
-            border-radius: 8px;
-            background: var(--bg);
-            color: var(--primary);
-        }
-        .cat-acc-body {
-            padding: 4px 14px 12px 14px;
-            border-top: 1px solid var(--border);
-            display: block;
-        }
-        .cat-accordion.collapsed .cat-acc-body {
-            display: none;
-        }
-        .cat-accordion.collapsed .chevron {
-            transform: rotate(90deg);
-        }
-        .chevron {
-            transition: transform 0.2s;
-            font-size: 0.75rem;
-            color: var(--muted);
-        }
+        .cat-acc-title { display: flex; align-items: center; gap: 8px; font-size: 0.86rem; font-weight: bold; }
+        .cat-mini-badge { font-size: 0.72rem; padding: 2px 8px; border-radius: 8px; background: var(--bg); color: var(--primary); }
+        .cat-acc-body { padding: 4px 14px 12px 14px; border-top: 1px solid var(--border); display: block; }
+        .cat-accordion.collapsed .cat-acc-body { display: none; }
+        .cat-accordion.collapsed .chevron { transform: rotate(90deg); }
+        .chevron { transition: transform 0.2s; font-size: 0.75rem; color: var(--muted); }
 
         .task-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px dashed rgba(255,255,255,0.06);
-            gap: 8px;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 0; border-bottom: 1px dashed rgba(255,255,255,0.06); gap: 8px;
         }
-        .task-row:last-child {
-            border-bottom: none;
-        }
-        .task-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-            font-size: 0.86rem;
-            cursor: pointer;
-            line-height: 1.4;
-        }
-        .task-label input {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--success);
-            flex-shrink: 0;
-        }
-        .task-row.done .task-label span {
-            text-decoration: line-through;
-            color: var(--muted);
-        }
+        .task-row:last-child { border-bottom: none; }
+        .task-label { display: flex; align-items: center; gap: 10px; flex: 1; font-size: 0.85rem; cursor: pointer; line-height: 1.4; }
+        .task-label input { width: 20px; height: 20px; accent-color: var(--success); flex-shrink: 0; }
+        .task-row.done .task-label span { text-decoration: line-through; color: var(--muted); }
+        .icon-btn { background: transparent; border: none; cursor: pointer; font-size: 0.9rem; opacity: 0.75; color: var(--text); padding: 4px 6px; }
 
-        /* ========== ۵. کارت‌ها و دکمه‌های عمومی ========== */
+        /* ========== ۵. کارت‌ها و دکمه‌ها ========== */
         .section-card {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -304,255 +191,120 @@
             margin-bottom: 14px;
         }
         .section-card h3 {
-            font-size: 0.92rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            font-size: 0.9rem; color: var(--primary); margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center;
         }
         .btn {
-            background: var(--primary);
-            color: #000;
-            border: none;
-            padding: 9px 14px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 0.8rem;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            background: var(--primary); color: #000; border: none;
+            padding: 10px 14px; border-radius: 10px; font-weight: bold;
+            font-size: 0.8rem; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
         }
+        .btn:active { opacity: 0.8; transform: scale(0.98); }
         .btn.secondary { background: var(--surface-light); color: var(--text); }
         .btn.success { background: var(--success); color: #000; }
         .btn.purple { background: var(--accent); color: #fff; }
         .btn.danger { background: rgba(239, 68, 68, 0.18); color: #f87171; border: 1px solid var(--danger); }
 
         input[type="text"], select, textarea {
-            background: var(--bg);
-            color: var(--text);
+            background: var(--bg); color: var(--text);
             border: 1px solid var(--surface-light);
-            padding: 10px 12px;
-            border-radius: 10px;
-            width: 100%;
-            font-size: 0.85rem;
-            user-select: text;
+            padding: 10px 12px; border-radius: 10px;
+            width: 100%; font-size: 0.84rem; user-select: text;
         }
 
-        /* ========== ۶. نمودارها و آمار در تب دوم ========== */
+        /* ========== ۶. نمودارها ========== */
         .segmented-tabs {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 4px;
-            background: var(--bg);
-            padding: 4px;
-            border-radius: 12px;
-            margin-bottom: 14px;
-            border: 1px solid var(--border);
+            display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;
+            background: var(--bg); padding: 4px; border-radius: 12px;
+            margin-bottom: 14px; border: 1px solid var(--border);
         }
         .seg-btn {
-            background: transparent;
-            color: var(--muted);
-            border: none;
-            padding: 8px 4px;
-            border-radius: 8px;
-            font-size: 0.73rem;
-            cursor: pointer;
-            text-align: center;
+            background: transparent; color: var(--muted); border: none;
+            padding: 8px 4px; border-radius: 8px; font-size: 0.72rem; cursor: pointer;
         }
-        .seg-btn.active {
-            background: var(--primary);
-            color: #000;
-            font-weight: bold;
-        }
-        .kpi-2x2 {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-        .kpi-card {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 10px;
-            text-align: center;
-        }
-        .kpi-card span {
-            display: block;
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: var(--success);
-            margin-top: 2px;
-        }
-        .kpi-card small {
-            font-size: 0.72rem;
-            color: var(--muted);
-        }
-        .bars-box {
-            display: grid;
-            grid-auto-flow: column;
-            grid-auto-columns: 1fr;
-            gap: 6px;
-            height: 130px;
-            align-items: end;
-            padding-top: 20px;
-            overflow-x: auto;
-        }
-        .bar-col {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            height: 100%;
-            justify-content: flex-end;
-            min-width: 34px;
-        }
-        .bar-fill {
-            width: 100%;
-            max-width: 32px;
-            border-radius: 6px 6px 0 0;
-            min-height: 4px;
-        }
+        .seg-btn.active { background: var(--primary); color: #000; font-weight: bold; }
+        .kpi-2x2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 14px; }
+        .kpi-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 10px; text-align: center; }
+        .kpi-card span { display: block; font-size: 1.15rem; font-weight: bold; color: var(--success); margin-top: 2px; }
+        .kpi-card small { font-size: 0.7rem; color: var(--muted); }
+        .bars-box { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; height: 130px; align-items: end; padding-top: 20px; overflow-x: auto; }
+        .bar-col { display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; min-width: 34px; }
+        .bar-fill { width: 100%; max-width: 32px; border-radius: 6px 6px 0 0; min-height: 4px; }
         .bar-val { font-size: 0.65rem; margin-bottom: 3px; }
         .bar-lbl { font-size: 0.65rem; color: var(--muted); margin-top: 5px; white-space: nowrap; }
 
-        /* ========== ۷. نوار ناوبری پایین صفحه (Bottom Navigation) ========== */
+        /* ========== ۷. نوار پایین صفحه ========== */
         .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 68px;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(16px);
+            position: fixed; bottom: 0; left: 0; right: 0; height: 66px;
+            background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(16px);
             border-top: 1px solid var(--border);
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            z-index: 30;
-            max-width: 768px;
-            margin: 0 auto;
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            z-index: 30; max-width: 768px; margin: 0 auto;
         }
         .nav-tab {
-            background: transparent;
-            border: none;
-            color: var(--muted);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            font-size: 0.72rem;
-            cursor: pointer;
-            position: relative;
+            background: transparent; border: none; color: var(--muted);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 4px; font-size: 0.72rem; cursor: pointer; position: relative;
         }
-        .nav-tab .nav-ico {
-            font-size: 1.2rem;
-            transition: transform 0.2s;
-        }
-        .nav-tab.active {
-            color: var(--primary);
-            font-weight: bold;
-        }
-        .nav-tab.active .nav-ico {
-            transform: translateY(-2px);
-        }
+        .nav-tab .nav-ico { font-size: 1.2rem; }
+        .nav-tab.active { color: var(--primary); font-weight: bold; }
         .nav-tab.active::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            width: 32px;
-            height: 3px;
-            background: var(--primary);
-            border-radius: 0 0 4px 4px;
+            content: ''; position: absolute; top: 0; width: 32px; height: 3px;
+            background: var(--primary); border-radius: 0 0 4px 4px;
         }
 
-        /* ========== ۸. دکمه شناور افزودن سریع (FAB) و پنجره پاپ‌آپ (Modal) ========== */
+        /* ========== ۸. دکمه شناور و پاپ‌آپ ========== */
         .fab-btn {
-            position: fixed;
-            bottom: 82px;
-            left: 18px;
-            width: 52px;
-            height: 52px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #fff;
-            border: none;
-            font-size: 1.6rem;
+            position: fixed; bottom: 80px; left: 18px; width: 52px; height: 52px;
+            border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: #fff; border: none; font-size: 1.6rem;
             box-shadow: 0 6px 20px rgba(56, 189, 248, 0.4);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 25;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 25;
         }
         .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            z-index: 50;
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75);
+            display: none; align-items: center; justify-content: center;
+            padding: 16px; z-index: 50;
         }
         .modal-card {
-            background: var(--surface);
-            border: 1px solid var(--surface-light);
-            border-radius: var(--radius);
-            padding: 18px;
-            width: 100%;
-            max-width: 440px;
+            background: var(--surface); border: 1px solid var(--surface-light);
+            border-radius: var(--radius); padding: 18px; width: 100%; max-width: 440px;
         }
-        .days-chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin: 10px 0;
-        }
+        .days-chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
         .day-chip {
-            background: var(--bg);
-            border: 1px solid var(--surface-light);
-            color: var(--muted);
-            padding: 5px 10px;
-            border-radius: 8px;
-            font-size: 0.75rem;
-            cursor: pointer;
+            background: var(--bg); border: 1px solid var(--surface-light);
+            color: var(--muted); padding: 5px 10px; border-radius: 8px;
+            font-size: 0.75rem; cursor: pointer;
         }
         .day-chip.selected {
-            background: rgba(56, 189, 248, 0.2);
-            border-color: var(--primary);
-            color: var(--primary);
-            font-weight: bold;
+            background: rgba(56, 189, 248, 0.2); border-color: var(--primary);
+            color: var(--primary); font-weight: bold;
         }
         .notice-banner {
-            background: rgba(245, 158, 11, 0.15);
-            border: 1px solid var(--warning);
-            color: #fcd34d;
-            padding: 9px 12px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            font-size: 0.78rem;
-            display: none;
+            background: rgba(245, 158, 11, 0.15); border: 1px solid var(--warning);
+            color: #fcd34d; padding: 9px 12px; border-radius: 12px;
+            margin-bottom: 12px; font-size: 0.78rem; display: none;
         }
         .manage-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: var(--bg);
-            padding: 9px 12px;
-            border-radius: 10px;
-            margin-bottom: 8px;
-            font-size: 0.8rem;
-            gap: 8px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--bg); padding: 9px 12px; border-radius: 10px;
+            margin-bottom: 8px; font-size: 0.8rem; gap: 8px;
+        }
+        .toast-msg {
+            position: fixed; bottom: 80px; right: 16px; left: 16px;
+            background: #10b981; color: #000; font-weight: bold;
+            padding: 10px 14px; border-radius: 10px; text-align: center;
+            font-size: 0.82rem; z-index: 100; display: none;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
     </style>
 </head>
 <body>
 
-    <!-- هدر ثابت بالا -->
+    <div class="toast-msg" id="toastMsg"></div>
+
+    <!-- هدر ثابت بالا با نمایش ساعت زنده گوشی -->
     <header class="app-bar">
         <div class="brand-area">
             <div class="brand-logo-circle">Y</div>
@@ -561,30 +313,32 @@
                 <p>همراه تو در تمام مسیر زندگی</p>
             </div>
         </div>
-        <div class="streak-pill" id="headerStreak">🔥 0 روز استمرار</div>
+        <div class="header-right">
+            <div class="streak-pill" id="headerStreak">🔥 0 روز استمرار</div>
+            <div class="live-clock" id="deviceClock">--:--:--</div>
+        </div>
     </header>
 
-    <!-- مخزن ۴ صفحه مجزا (بدون اسکرول اضافی) -->
     <main class="views-wrapper">
 
-        <!-- ==================== صفحه ۱: برنامه امروز (صفحه اصلی) ==================== -->
+        <!-- ==================== صفحه ۱: برنامه امروز ==================== -->
         <section id="view-today" class="view-page active">
             <div class="date-hero-card">
                 <div class="date-switcher">
-                    <button class="nav-icon-btn" onclick="changeDate(-1)" title="روز قبل">❯</button>
-                    <div class="date-center-box" onclick="document.getElementById('hiddenDatePicker').showPicker()">
+                    <button class="nav-icon-btn" onclick="changeDate(-1)">❯</button>
+                    <label class="date-center-box">
                         <div class="jalali-main" id="todayJalaliTitle">در حال بارگذاری...</div>
-                        <div class="iso-sub"><span id="todayIsoTitle"></span> (برای تغییر تاریخ ضربه بزنید)</div>
-                        <input type="date" id="hiddenDatePicker" style="position:absolute; opacity:0; width:1px; height:1px;" onchange="onDatePick(this.value)">
-                    </div>
-                    <button class="nav-icon-btn" onclick="changeDate(1)" title="روز بعد">❮</button>
+                        <div class="iso-sub"><span id="todayIsoTitle"></span> (تغییر تاریخ 📅)</div>
+                        <input type="date" id="hiddenDatePicker" style="position:absolute; inset:0; opacity:0; width:100%; height:100%; cursor:pointer;" onchange="onDatePick(this.value)">
+                    </label>
+                    <button class="nav-icon-btn" onclick="changeDate(1)">❮</button>
                 </div>
 
                 <div class="hero-progress-row">
                     <div class="progress-info">
                         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
                             <h3>پیشرفت برنامه امروز</h3>
-                            <button class="btn secondary" style="padding:3px 8px; font-size:0.7rem;" onclick="goToToday()">برگشت به امروز</button>
+                            <button class="btn secondary" style="padding:3px 8px; font-size:0.7rem;" onclick="goToToday()">امروز (ساعت گوشی)</button>
                         </div>
                         <div class="progress-bar-bg">
                             <div class="progress-bar-fill" id="todayProgressBar"></div>
@@ -599,11 +353,8 @@
             </div>
 
             <div id="specialDayNotice" class="notice-banner"></div>
-
-            <!-- لیست دسته‌بندی‌های تاشو امروز -->
             <div id="todayCategoriesList"></div>
 
-            <!-- یادداشت سریع روزانه -->
             <div class="section-card" style="margin-top: 12px;">
                 <h3>📝 یادداشت و دستاوردهای امروز</h3>
                 <textarea id="dailyNoteInput" rows="2" placeholder="خلاصه دستاوردها، تعداد فاکتورها، مطالعه یا نکات مهم امروز..." oninput="saveDailyNote(this.value)"></textarea>
@@ -654,9 +405,9 @@
         <section id="view-reports" class="view-page">
             <div class="section-card">
                 <h3>📄 تولیدکننده متن رسمی گزارش‌ها</h3>
-                <p style="font-size:0.78rem; color:var(--muted); margin-bottom:12px;">نوع گزارش مورد نظر خود را انتخاب کنید تا متن کامل و دسته‌بندی‌شده آماده ارسال شود:</p>
+                <p style="font-size:0.76rem; color:var(--muted); margin-bottom:10px;">ابتدا روی یکی از ۵ دکمه زیر بزنید تا گزارش ساخته شود، سپس آن را به اشتراک بگذارید یا کپی کنید:</p>
                 
-                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin-bottom:10px;">
+                <div style="display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin-bottom:8px;">
                     <button class="btn" onclick="generateFormattedReport('1d')">📋 گزارش روزانه</button>
                     <button class="btn" onclick="generateFormattedReport('7d')">📋 گزارش هفتگی</button>
                     <button class="btn" onclick="generateFormattedReport('30d')">📋 گزارش ماهانه</button>
@@ -664,24 +415,23 @@
                 </div>
                 <button class="btn purple" style="width:100%; margin-bottom:12px;" onclick="generateFormattedReport('all')">🌟 تولید گزارش کل (آرشیو جامع)</button>
 
-                <textarea id="reportTextOutput" rows="10" placeholder="روی یکی از دکمه‌های بالا بزنید تا متن گزارش در اینجا ساخته شود..."></textarea>
+                <textarea id="reportTextOutput" rows="9" placeholder="روی یکی از دکمه‌های بالا بزنید تا متن گزارش در اینجا ساخته شود..."></textarea>
 
                 <div style="display:flex; gap:8px; margin-top:10px;">
-                    <button class="btn success" style="flex:1;" onclick="copyReportBox()">📋 کپی متن گزارش</button>
-                    <button class="btn secondary" style="flex:1;" onclick="shareReportText()">📤 اشتراک‌گذاری مستقیم</button>
+                    <button class="btn success" style="flex:1;" onclick="shareReportText()">📤 اشتراک‌گذاری در برنامه‌ها</button>
+                    <button class="btn secondary" style="flex:1;" onclick="copyReportBox()">📋 کپی در کلیپ‌بورد</button>
                 </div>
             </div>
 
             <div class="section-card">
-                <h3>📊 خروجی جدول اکسل (CSV)</h3>
-                <p style="font-size:0.76rem; color:var(--muted); margin-bottom:10px;">دریافت فایل اکسل حاوی تمام تاریخچه روزها، درصدها و یادداشت‌ها:</p>
-                <button class="btn secondary" style="width:100%;" onclick="exportCSV()">⬇️ دانلود فایل اکسل (CSV کل تاریخچه)</button>
+                <h3>📊 خروجی فایل اکسل (CSV تاریخچه)</h3>
+                <p style="font-size:0.75rem; color:var(--muted); margin-bottom:10px;">فایل اکسل کل تاریخچه ساخته می‌شود و منوی ذخیره/ارسال گوشی باز می‌گردد:</p>
+                <button class="btn warning" style="width:100%; color:#000;" onclick="exportCSV()">📊 ساخت و ارسال/ذخیره فایل اکسل (CSV)</button>
             </div>
         </section>
 
-        <!-- ==================== صفحه ۴: مدیریت بخش‌ها و کارها ==================== -->
+        <!-- ==================== صفحه ۴: مدیریت و پشتیبان‌گیری ==================== -->
         <section id="view-manage" class="view-page">
-            <!-- مدیریت بخش‌های اصلی -->
             <div class="section-card">
                 <h3>🗂️ ۱. مدیریت بخش‌های اصلی (کم/زیاد/تغییر نام)</h3>
                 <input type="hidden" id="editCatId" value="">
@@ -695,35 +445,42 @@
                 <div id="manageCatsContainer"></div>
             </div>
 
-            <!-- مدیریت تمام کارهای روزانه -->
             <div class="section-card">
                 <h3>
                     <span>📋 ۲. فهرست کل کارهای تعریف‌شده</span>
                     <button class="btn" style="padding:5px 10px; font-size:0.74rem;" onclick="openTaskModal()">+ کار جدید</button>
                 </h3>
-                <div id="manageTasksContainer" style="max-height: 280px; overflow-y: auto;"></div>
+                <div id="manageTasksContainer" style="max-height: 250px; overflow-y: auto;"></div>
             </div>
 
-            <!-- پشتیبان‌گیری و بازیابی اطلاعات -->
+            <!-- بخش پشتیبان‌گیری دوگانه (فایلی + متنی ضدخطا برای اندروید) -->
             <div class="section-card">
                 <h3>💾 ۳. پشتیبان‌گیری و انتقال اطلاعات</h3>
-                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-                    <button class="btn secondary" style="flex:1;" onclick="downloadBackupJSON()">⬇️ ذخیره فایل پشتیبان</button>
+                <p style="font-size:0.75rem; color:var(--muted); margin-bottom:10px;">روش اول: ارسال یا دریافت فایل پشتیبان (`.json`):</p>
+                <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+                    <button class="btn success" style="flex:1;" onclick="downloadBackupJSON()">📤 ذخیره / ارسال فایل بکاپ</button>
                     <label class="btn secondary" style="flex:1; cursor:pointer;">
-                        ⬆️ بازیابی فایل پشتیبان
-                        <input type="file" accept=".json" style="display:none;" onchange="importBackupJSON(event)">
+                        📥 انتخاب فایل بکاپ از گوشی
+                        <input type="file" accept="*/*" style="display:none;" onchange="importBackupJSON(event)">
                     </label>
                 </div>
-                <button class="btn danger" style="width:100%; font-size:0.75rem;" onclick="resetToDefaultAll()">🔄 بازگردانی بخش‌ها و کارها به حالت پیش‌فرض اولیه</button>
+
+                <p style="font-size:0.75rem; color:var(--muted); margin-bottom:8px;">روش دوم (فوق‌سریع برای موبایل): کپی یا جایگذاری کد پشتیبان:</p>
+                <textarea id="backupCodeBox" rows="3" placeholder="برای بازیابی از متن، کد بکاپ قبلی را اینجا Paste کنید و دکمه بازیابی را بزنید..."></textarea>
+                <div style="display:flex; gap:8px; margin-top:8px; margin-bottom:14px;">
+                    <button class="btn secondary" style="flex:1;" onclick="exportBackupToText()">📋 تولید و کپی کد بکاپ</button>
+                    <button class="btn purple" style="flex:1;" onclick="importBackupFromText()">🔄 بازیابی از کد بالا</button>
+                </div>
+
+                <button class="btn danger" style="width:100%; font-size:0.75rem;" onclick="resetToDefaultAll()">⚠️ بازگردانی بخش‌ها و کارها به حالت پیش‌فرض اولیه</button>
             </div>
         </section>
 
     </main>
 
-    <!-- دکمه شناور افزودن سریع کار (فقط در تب امروز) -->
-    <button class="fab-btn" id="fabAddBtn" onclick="openTaskModal()" title="افزودن کار جدید">+</button>
+    <button class="fab-btn" id="fabAddBtn" onclick="openTaskModal()">+</button>
 
-    <!-- پنجره پاپ‌آپ افزودن/ویرایش سریع کار (Modal) -->
+    <!-- پنجره پاپ‌آپ افزودن/ویرایش کار -->
     <div class="modal-overlay" id="taskModal">
         <div class="modal-card">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -734,7 +491,6 @@
             <div style="display:flex; flex-direction:column; gap:10px;">
                 <input type="text" id="modalTaskText" placeholder="عنوان کار یا عادت روزانه...">
                 <select id="modalTaskCat"></select>
-                
                 <div>
                     <small style="color:var(--muted); display:block; margin-bottom:4px;">روزهای تکرار در هفته:</small>
                     <div class="days-chips" id="modalDaysChips"></div>
@@ -744,13 +500,11 @@
                         <button class="btn secondary" style="padding:4px 8px; font-size:0.7rem;" onclick="setModalPresetDays(['thu'])">پنج‌شنبه</button>
                     </div>
                 </div>
-
                 <button class="btn success" style="width:100%; padding:11px; margin-top:6px;" onclick="saveModalTask()">✔ ذخیره در برنامه</button>
             </div>
         </div>
     </div>
 
-    <!-- نوار ناوبری پایین صفحه (Bottom Tab Bar) -->
     <nav class="bottom-nav">
         <button class="nav-tab active" onclick="switchView('today', this)">
             <span class="nav-ico">📅</span>
@@ -771,6 +525,7 @@
     </nav>
 
 <script>
+    // ==================== ۱. مدیریت دقیق تاریخ و ساعت از روی ساعت موبایل ====================
     const weekDaysMap = [
         { id: 'sun', jsDay: 0, name: 'یکشنبه' },
         { id: 'mon', jsDay: 1, name: 'دوشنبه' },
@@ -781,6 +536,143 @@
         { id: 'sat', jsDay: 6, name: 'شنبه' }
     ];
 
+    // ساخت شیء تاریخ روی ساعت ۱۲ ظهر محلی گوشی برای جلوگیری از خطای Timezone در نیمه‌شب
+    function parseSafeLocalDate(isoStr) {
+        const [y, m, d] = isoStr.split('-').map(Number);
+        return new Date(y, m - 1, d, 12, 0, 0);
+    }
+
+    function formatDateISO(dateObj) {
+        const y = dateObj.getFullYear();
+        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const d = String(dateObj.getDate()).padStart(2, '0');
+        return `${y}-${m}-${d}`;
+    }
+
+    function getDayCodeFromISO(isoStr) {
+        const dateObj = parseSafeLocalDate(isoStr);
+        return weekDaysMap.find(w => w.jsDay === dateObj.getDay());
+    }
+
+    function getJalaliString(isoStr) {
+        const dateObj = parseSafeLocalDate(isoStr);
+        try {
+            return new Intl.DateTimeFormat('fa-IR-u-ca-persian', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(dateObj);
+        } catch (e) {
+            return isoStr;
+        }
+    }
+
+    // بروزرسانی زنده ساعت از روی ساعت سیستم‌عامل گوشی
+    function updateLiveClock() {
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const el = document.getElementById('deviceClock');
+        if (el) el.innerText = `🕒 ساعت گوشی: ${timeStr}`;
+    }
+    setInterval(updateLiveClock, 1000);
+    updateLiveClock();
+
+    function showToast(msg) {
+        const t = document.getElementById('toastMsg');
+        t.innerText = msg;
+        t.style.display = 'block';
+        setTimeout(() => { t.style.display = 'none'; }, 2800);
+    }
+
+    // ==================== ۲. پل ارتباطی بومی اندروید (Capacitor Native Share & File) ====================
+    async function nativeShareText(title, text) {
+        // ۱. تلاش با پلاگین رسمی Capacitor Share (در محیط اپ اندروید)
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Share) {
+            try {
+                await window.Capacitor.Plugins.Share.share({
+                    title: title,
+                    text: text,
+                    dialogTitle: 'انتخاب برنامه برای اشتراک‌گذاری'
+                });
+                return;
+            } catch (e) {
+                console.log('Capacitor Share canceled or failed:', e);
+            }
+        }
+        // ۲. تلاش با Web Share API استاندارد
+        if (navigator.share) {
+            try {
+                await navigator.share({ title: title, text: text });
+                return;
+            } catch (e) {}
+        }
+        // ۳. در صورتی که روی مرورگر دسکتاپ باشد، کپی می‌کند
+        await copyTextUniversal(text);
+        showToast('متن در کلیپ‌بورد کپی شد!');
+    }
+
+    async function nativeExportAndShareFile(fileName, contentString, mimeType) {
+        // ۱. اگر داخل اپلیکیشن اندروید (Capacitor) هستیم: ذخیره در حافظه گوشی و باز کردن منوی Share اندروید
+        if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Filesystem && window.Capacitor.Plugins.Share) {
+            try {
+                const writeRes = await window.Capacitor.Plugins.Filesystem.writeFile({
+                    path: fileName,
+                    data: contentString,
+                    directory: 'CACHE',
+                    encoding: 'utf8'
+                });
+                await window.Capacitor.Plugins.Share.share({
+                    title: fileName,
+                    text: `فایل خروجی از اپلیکیشن یار‌وو (${fileName})`,
+                    url: writeRes.uri,
+                    dialogTitle: 'ذخیره یا ارسال فایل با...'
+                });
+                return;
+            } catch (err) {
+                console.log('Native file share fallback:', err);
+            }
+        }
+
+        // ۲. تلاش با Web Share Files
+        if (navigator.canShare) {
+            try {
+                const file = new File([contentString], fileName, { type: mimeType });
+                if (navigator.canShare({ files: [file] })) {
+                    await navigator.share({ title: fileName, files: [file] });
+                    return;
+                }
+            } catch (e) {}
+        }
+
+        // ۳. دانلود استاندارد در مرورگر کامپیوتر
+        try {
+            const blob = new Blob([contentString], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            showToast(`فایل ${fileName} آماده شد.`);
+        } catch (e) {
+            await nativeShareText(fileName, contentString);
+        }
+    }
+
+    async function copyTextUniversal(text) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (e) {}
+        }
+        const temp = document.createElement('textarea');
+        temp.value = text;
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        return true;
+    }
+
+    // ==================== ۳. دیتابیس و منطق برنامه ====================
     const defaultCategories = [
         {
             id: 'morning',
@@ -852,7 +744,6 @@
         localStorage.setItem('yarvoTrackerDB_v1', JSON.stringify(db));
     }
 
-    // جابه‌جایی بین ۴ تب اصلی برنامه
     function switchView(viewName, btnEl) {
         document.querySelectorAll('.view-page').forEach(p => p.classList.remove('active'));
         document.getElementById('view-' + viewName).classList.add('active');
@@ -863,34 +754,14 @@
         document.getElementById('fabAddBtn').style.display = (viewName === 'today') ? 'flex' : 'none';
 
         if (viewName === 'stats') renderAnalytics();
+        if (viewName === 'reports' && !document.getElementById('reportTextOutput').value) {
+            generateFormattedReport('1d');
+        }
         if (viewName === 'manage') {
             renderManageCategories();
             renderManageTasks();
         }
         document.querySelector('.views-wrapper').scrollTop = 0;
-    }
-
-    function formatDateISO(dateObj) {
-        const y = dateObj.getFullYear();
-        const m = String(dateObj.getMonth() + 1).padStart(2, '0');
-        const d = String(dateObj.getDate()).padStart(2, '0');
-        return `${y}-${m}-${d}`;
-    }
-
-    function getDayCodeFromISO(isoStr) {
-        const [y, m, d] = isoStr.split('-').map(Number);
-        const dateObj = new Date(y, m - 1, d);
-        return weekDaysMap.find(w => w.jsDay === dateObj.getDay());
-    }
-
-    function getJalaliString(isoStr) {
-        const [y, m, d] = isoStr.split('-').map(Number);
-        const dateObj = new Date(y, m - 1, d);
-        try {
-            return new Intl.DateTimeFormat('fa-IR', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }).format(dateObj);
-        } catch (e) {
-            return isoStr;
-        }
     }
 
     function getActiveItemsForDate(isoStr) {
@@ -914,8 +785,7 @@
     }
 
     function calcStreak() {
-        const [y, m, d] = selectedDateStr.split('-').map(Number);
-        const refDate = new Date(y, m - 1, d);
+        const refDate = parseSafeLocalDate(selectedDateStr);
         let streak = 0;
         for (let i = 0; i < 3650; i++) {
             const dt = new Date(refDate);
@@ -928,8 +798,7 @@
     }
 
     function changeDate(offset) {
-        const [y, m, d] = selectedDateStr.split('-').map(Number);
-        const dt = new Date(y, m - 1, d);
+        const dt = parseSafeLocalDate(selectedDateStr);
         dt.setDate(dt.getDate() + offset);
         selectedDateStr = formatDateISO(dt);
         renderTodayView();
@@ -942,9 +811,9 @@
     function goToToday() {
         selectedDateStr = formatDateISO(new Date());
         renderTodayView();
+        showToast('به تاریخ امروزِ گوشی برگشتید');
     }
 
-    // رندر صفحه اول (امروز)
     function renderTodayView() {
         document.getElementById('hiddenDatePicker').value = selectedDateStr;
         document.getElementById('todayJalaliTitle').innerText = getJalaliString(selectedDateStr);
@@ -1038,8 +907,7 @@
 
     // ==================== صفحه ۲: آمار و نمودار ====================
     function getDatesForRange(rangeType) {
-        const [y, m, d] = selectedDateStr.split('-').map(Number);
-        const refDate = new Date(y, m - 1, d);
+        const refDate = parseSafeLocalDate(selectedDateStr);
         let list = [];
         if (rangeType === '1d') list.push(selectedDateStr);
         else if (rangeType === '7d' || rangeType === '30d') {
@@ -1075,8 +943,7 @@
         chart.innerHTML = '';
         breakdown.innerHTML = '';
 
-        const [y, m, d] = selectedDateStr.split('-').map(Number);
-        const refDate = new Date(y, m - 1, d);
+        const refDate = parseSafeLocalDate(selectedDateStr);
         const dateList = getDatesForRange(currentRange);
         let barGroups = [];
 
@@ -1100,7 +967,7 @@
             });
         } else if (currentRange === '365d') {
             for (let i = 11; i >= 0; i--) {
-                const dt = new Date(refDate.getFullYear(), refDate.getMonth() - i, 1);
+                const dt = new Date(refDate.getFullYear(), refDate.getMonth() - i, 1, 12, 0, 0);
                 const ym = `${dt.getFullYear()}-${String(dt.getMonth() + 1).padStart(2, '0')}`;
                 let mTotal = 0, mDays = 0;
                 Object.keys(db.records).forEach(iso => {
@@ -1190,7 +1057,7 @@
         });
     }
 
-    // ==================== صفحه ۳: گزارش‌ساز رسمی ====================
+    // ==================== صفحه ۳: گزارش‌ساز رسمی و اکسل ====================
     function generateFormattedReport(rangeType) {
         const title = rangeTitles[rangeType];
         const dateList = getDatesForRange(rangeType);
@@ -1253,49 +1120,39 @@
             });
         }
         document.getElementById('reportTextOutput').value = text;
+        showToast(`${title} تولید شد`);
     }
 
-    function copyReportBox() {
+    async function copyReportBox() {
         const box = document.getElementById('reportTextOutput');
         if (!box.value) generateFormattedReport('1d');
-        if (navigator.clipboard) {
-            navigator.clipboard.writeText(box.value).then(() => alert('متن گزارش کپی شد!'));
-        } else {
-            box.select();
-            document.execCommand('copy');
-            alert('متن گزارش کپی شد!');
-        }
+        await copyTextUniversal(box.value);
+        showToast('متن گزارش کپی شد!');
     }
 
-    function shareReportText() {
+    async function shareReportText() {
         const box = document.getElementById('reportTextOutput');
         if (!box.value) generateFormattedReport('1d');
-        if (navigator.share) {
-            navigator.share({ title: 'گزارش یار‌وو | Yarvo', text: box.value }).catch(() => {});
-        } else {
-            copyReportBox();
-        }
+        await nativeShareText('گزارش یار‌وو | Yarvo', box.value);
     }
 
-    function exportCSV() {
+    async function exportCSV() {
+        // اگر هنوز روزی تیک نخورده، حداقل وضعیت امروز را در فایل اکسل قرار می‌دهد
+        const allDates = Object.keys(db.records).length > 0 ? Object.keys(db.records).sort() : [selectedDateStr];
         let csv = '\uFEFFتاریخ میلادی,تاریخ شمسی,روز هفته,درصد پیشرفت,انجام شده,کل کارها,یادداشت\n';
-        const sortedDates = Object.keys(db.records).sort();
-        if (sortedDates.length === 0) return alert('هنوز داده‌ای ثبت نشده است.');
-        sortedDates.forEach(dateStr => {
+
+        allDates.forEach(dateStr => {
             const stats = calcDateStats(dateStr);
             const jalali = getJalaliString(dateStr).replace(/,/g, ' ');
             const dayName = getDayCodeFromISO(dateStr).name;
             const note = (db.records[dateStr]?.note || '').replace(/\n/g, ' | ').replace(/,/g, '،');
             csv += `${dateStr},${jalali},${dayName},${stats.pct}%,${stats.done},${stats.total},"${note}"\n`;
         });
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-        const a = document.createElement('a');
-        a.href = URL.createObjectURL(blob);
-        a.download = `Yarvo_Report_${selectedDateStr}.csv`;
-        a.click();
+
+        await nativeExportAndShareFile(`Yarvo_History_${selectedDateStr}.csv`, csv, 'text/csv;charset=utf-8;');
     }
 
-    // ==================== پاپ‌آپ افزودن/ویرایش کار و صفحه ۴ (مدیریت) ====================
+    // ==================== صفحه ۴: مدیریت و پشتیبان‌گیری ====================
     function openTaskModal(catId = null, itemId = null) {
         const select = document.getElementById('modalTaskCat');
         select.innerHTML = '';
@@ -1373,6 +1230,7 @@
         closeTaskModal();
         renderTodayView();
         renderManageTasks();
+        showToast('کار با موفقیت ذخیره شد');
     }
 
     function saveCategory() {
@@ -1394,6 +1252,7 @@
         saveDatabase();
         renderManageCategories();
         renderTodayView();
+        showToast('بخش ذخیره شد');
     }
 
     function editCategoryStart(catId) {
@@ -1403,6 +1262,7 @@
         document.getElementById('catBadgeInput').value = cat.badge || '';
         document.getElementById('editCatId').value = cat.id;
         document.getElementById('saveCatBtn').innerText = '✔ ثبت ویرایش';
+        document.querySelector('.views-wrapper').scrollTop = 0;
     }
 
     function moveCategory(idx, dir) {
@@ -1479,13 +1339,10 @@
         });
     }
 
-    function downloadBackupJSON() {
+    // پشتیبان‌گیری فایلی و متنی
+    async function downloadBackupJSON() {
         const jsonText = JSON.stringify(db, null, 2);
-        const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(jsonText);
-        const a = document.createElement('a');
-        a.href = dataStr;
-        a.download = `Yarvo_Backup_${selectedDateStr}.json`;
-        a.click();
+        await nativeExportAndShareFile(`Yarvo_Backup_${selectedDateStr}.json`, jsonText, 'application/json');
     }
 
     function importBackupJSON(event) {
@@ -1501,11 +1358,40 @@
                     renderTodayView();
                     renderManageCategories();
                     renderManageTasks();
-                    alert('اطلاعات با موفقیت بازیابی شد!');
+                    showToast('اطلاعات با موفقیت بازیابی شد!');
+                } else {
+                    alert('فرمت فایل پشتیبان نامعتبر است.');
                 }
-            } catch (err) { alert('فایل نامعتبر است.'); }
+            } catch (err) { alert('فایل انتخاب‌شده معتبر نیست.'); }
         };
         reader.readAsText(file);
+    }
+
+    async function exportBackupToText() {
+        const jsonText = JSON.stringify(db);
+        document.getElementById('backupCodeBox').value = jsonText;
+        await copyTextUniversal(jsonText);
+        showToast('کد پشتیبان تولید و در کلیپ‌بورد کپی شد!');
+    }
+
+    function importBackupFromText() {
+        const raw = document.getElementById('backupCodeBox').value.trim();
+        if (!raw) return alert('لطفاً ابتدا کد پشتیبان را در کادر بالا قرار دهید (Paste کنید).');
+        try {
+            const imported = JSON.parse(raw);
+            if (imported.categories && imported.records) {
+                db = imported;
+                saveDatabase();
+                renderTodayView();
+                renderManageCategories();
+                renderManageTasks();
+                showToast('اطلاعات از روی کد متنی با موفقیت بازیابی شد!');
+            } else {
+                alert('ساختار کد واردشده نامعتبر است.');
+            }
+        } catch (e) {
+            alert('کد واردشده ناقص یا نامعتبر است.');
+        }
     }
 
     function resetToDefaultAll() {
@@ -1515,6 +1401,7 @@
             renderTodayView();
             renderManageCategories();
             renderManageTasks();
+            showToast('به تنظیمات پیش‌فرض بازگردانی شد');
         }
     }
 
